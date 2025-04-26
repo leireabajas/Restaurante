@@ -1,0 +1,10 @@
+<h2>Lista de Restaurantes</h2>
+
+<ul>
+  @for (restaurant of restaurants; track restaurant._id) {
+    <li>
+        {{ restaurant.nombre }} - {{ restaurant.ubicacion }}
+
+    </li>
+  }
+</ul>

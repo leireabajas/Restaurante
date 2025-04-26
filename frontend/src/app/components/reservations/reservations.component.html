@@ -1,0 +1,45 @@
+<h2>Mis Reservas</h2>
+@for (reservation of reservations; track reservation._id) {
+  <li class="list-group-item reservation-card mb-4">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+      <div class="reservation-info">
+        <h5 class="fw-bold text-primary mb-1">
+          {{ reservation.restaurante?.nombre || 'Restaurante desconocido' }}
+        </h5>
+
+        <div class="mb-2 text-muted small">
+          📅 {{ reservation.fecha | date:'fullDate' }} - 🕒 {{ reservation.fecha | date:'shortTime' }}<br />
+          👥 <strong>{{ reservation.numeroPersonas }}</strong> personas
+        </div>
+
+        <!-- Estado -->
+        @if (reservation.estado === 'pendiente') {
+          <span class="badge rounded-pill bg-warning text-dark">⏳ Pendiente</span>
+        } @else if (reservation.estado === 'confirmada') {
+          <span class="badge rounded-pill bg-success">✅ Confirmada</span>
+        } @else if (reservation.estado === 'cancelada') {
+          <span class="badge rounded-pill bg-secondary">❌ Cancelada</span>
+        }
+      </div>
+
+      <div class="reservation-actions d-flex gap-2 mt-2 flex-wrap justify-content-end">
+        @if (userRole === 'usuario') {
+          <a
+            [routerLink]="['/edit-reservation', reservation._id]"
+            class="btn btn-edit btn-sm px-3 fw-semibold d-flex align-items-center"
+          >
+            ✏️ <span class="ms-1">Editar</span>
+          </a>
+        }
+
+        <button
+          class="btn btn-cancel btn-sm px-3 fw-semibold d-flex align-items-center"
+          (click)="deleteReservation(reservation._id)"
+        >
+          🗑️ <span class="ms-1">Cancelar</span>
+        </button>
+      </div>
+
+    </div>
+  </li>
+}

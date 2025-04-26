@@ -1,0 +1,16 @@
+<h2>Crear Restaurante</h2>
+<form (submit)="onSubmit()">
+  <label>Nombre:</label>
+  <input type="text" [(ngModel)]="restaurant.nombre" name="nombre" required />
+
+  <label>Ubicación:</label>
+  <input type="text" [(ngModel)]="restaurant.ubicacion" name="ubicacion" required />
+
+  <label>Tipo de Comida:</label>
+  <input type="text" [(ngModel)]="restaurant.tipoComida" name="tipoComida" required />
+
+  <label>Capacidad:</label>
+  <input type="number" [(ngModel)]="restaurant.capacidad" name="capacidad" required />
+
+  <button type="submit">Guardar</button>
+</form>

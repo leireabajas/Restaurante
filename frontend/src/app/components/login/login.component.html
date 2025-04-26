@@ -1,0 +1,12 @@
+<div class="login-container">
+  <h2>Iniciar Sesión</h2>
+  <form (submit)="onLogin()">
+    <label>Email:</label>
+    <input type="email" [(ngModel)]="email" required />
+
+    <label>Contraseña:</label>
+    <input type="password" [(ngModel)]="password" required />
+
+    <button type="submit">Login</button>
+  </form>
+</div>

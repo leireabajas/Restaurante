@@ -1,0 +1,26 @@
+.reservation-form {
+  background: #ffffff;
+  border-left: 5px solid #0d6efd;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.reservation-form:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+  color: #495057;
+}
+
+input, select {
+  border-radius: 6px !important;
+}
+
+button[type='submit'] {
+  transition: transform 0.2s ease;
+}
+
+button[type='submit']:hover {
+  transform: scale(1.05);
+}
