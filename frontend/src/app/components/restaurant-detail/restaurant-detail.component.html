@@ -1,1 +1,28 @@
-<p>restaurant-detail works!</p>
+<div class="container mt-4">
+  @if (restaurant) {
+    <div class="card restaurant-detail-card mx-auto p-4" style="max-width: 600px;">
+      <img
+        [src]="restaurant.imagen || 'https://via.placeholder.com/600x300?text=No+Image'"
+        alt="Imagen del Restaurante"
+        class="img-fluid mb-4 restaurant-detail-image"
+      />
+
+      <h2 class="mb-3 text-center">{{ restaurant.nombre }}</h2>
+
+      <p>📍 <strong>Ubicación:</strong> {{ restaurant.ubicacion }}</p>
+      <p>🍽️ <strong>Tipo de comida:</strong> {{ restaurant.tipoComida }}</p>
+
+      @if (restaurant.descripcion) {
+        <p>📝 <strong>Descripción:</strong> {{ restaurant.descripcion }}</p>
+      }
+
+      <div class="text-center mt-4">
+        <a routerLink="/restaurants" class="btn btn-outline-primary">🔙 Volver a la lista</a>
+      </div>
+    </div>
+  } @else {
+    <div class="text-center">
+      <p>Cargando restaurante...</p>
+    </div>
+  }
+</div>

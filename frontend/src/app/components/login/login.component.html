@@ -1,12 +1,29 @@
+<!-- src/app/components/login/login.component.html -->
 <div class="login-container">
   <h2>Iniciar Sesión</h2>
-  <form (submit)="onLogin()">
+  <!-- Cambia (submit) por (ngSubmit) y añade #loginForm="ngForm" -->
+  <form (ngSubmit)="onLogin()" #loginForm="ngForm">
     <label>Email:</label>
-    <input type="email" [(ngModel)]="email" required />
+    <!-- Añadimos name="email" -->
+    <input
+      type="email"
+      [(ngModel)]="email"
+      name="email"
+      required
+    />
 
     <label>Contraseña:</label>
-    <input type="password" [(ngModel)]="password" required />
+    <!-- Añadimos name="password" -->
+    <input
+      type="password"
+      [(ngModel)]="password"
+      name="password"
+      required
+    />
 
-    <button type="submit">Login</button>
+    <!-- Inhabilita el botón si el form es inválido -->
+    <button type="submit" [disabled]="loginForm.invalid">
+      Login
+    </button>
   </form>
 </div>

@@ -14,9 +14,11 @@ import {
 import { RestaurantsService } from './restaurants.service';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import {RolesGuard} from "../../common/roles.guard";
+import {Roles} from "../../common/roles.decorator";
 
 
-//@UseGuards(JwtAuthGuard)
+//@UseGuards( RolesGuard)
 @Controller('restaurants')
 export class RestaurantsController {
     constructor(private readonly restaurantsService: RestaurantsService) {}
@@ -50,6 +52,7 @@ export class RestaurantsController {
         }
     }
 
+    @Roles('admin')
     @Post()
     async create(@Body() createRestaurantDto: CreateRestaurantDto) {
         try {
@@ -60,6 +63,7 @@ export class RestaurantsController {
         }
     }
 
+    @Roles('admin')
     @Put(':id')
     async update(@Param('id') id: string, @Body() updateRestaurantDto: UpdateRestaurantDto) {
         try {
@@ -72,6 +76,7 @@ export class RestaurantsController {
         }
     }
 
+    @Roles('admin')
     @Delete(':id')
     async delete(@Param('id') id: string) {
         try {

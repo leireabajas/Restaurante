@@ -3,5 +3,6 @@ export interface UpdateRestaurantDto {
     ubicacion?: string;
     tipoComida?: string;
     capacidad?: number;
-    opiniones?: string[];
+    imagen?: string;
+    descripcion?: string;
 }

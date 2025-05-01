@@ -1,0 +1,67 @@
+/* 🎨 Estilo de las tarjetas de restaurante */
+.restaurant-card {
+  width: 100%;
+  max-width: 260px; /* Para que sean cuadraditas */
+  height: 400px; /* Altura fija */
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 🎯 Hover bonito para dar sensación de dinamismo */
+.restaurant-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 📸 Imagen de la tarjeta */
+.restaurant-image {
+  height: 160px;
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* 📦 Contenido del cuerpo de la tarjeta */
+.card-body {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* 📝 Título del restaurante */
+.card-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* 📍 Texto de ubicación y tipo de comida */
+.card-text {
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+/* 🔥 Botón Detalles */
+.btn-outline-primary {
+  transition: transform 0.2s ease;
+}
+
+.btn-outline-primary:hover {
+  transform: scale(1.05);
+}
+
+/* 🔎 Estilo del input de búsqueda */
+.search-container input {
+  max-width: 400px;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}

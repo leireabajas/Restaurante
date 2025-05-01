@@ -1,14 +1,18 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import {Controller, Get, Post, Put, Delete, Body, Param, UseGuards} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Usuario } from '../../schemas/user.schema';
+import {RolesGuard} from "../../common/roles.guard";
+import {JwtAuthGuard} from "../auth/auth.guard";
+import {Roles} from "../../common/roles.decorator";
 
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('users') // 👈 Define la ruta base para este controlador
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    // ➤ Crear un usuario
+    @Roles('admin')
     @Post()
     async create(@Body() createUserDto: CreateUserDto): Promise<Usuario> {
         return this.usersService.create(createUserDto);
@@ -26,13 +30,13 @@ export class UsersController {
         return this.usersService.findOne(id);
     }
 
-    // ➤ Actualizar un usuario por ID
+    @Roles('admin')
     @Put(':id')
     async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<Usuario> {
         return this.usersService.update(id, updateUserDto);
     }
 
-    // ➤ Eliminar un usuario por ID
+    @Roles('admin')
     @Delete(':id')
     async delete(@Param('id') id: string): Promise<void> {
         return this.usersService.delete(id);

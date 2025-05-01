@@ -1,34 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 import { RestaurantsService } from '../../services/restaurants.service';
-import {RouterLink} from '@angular/router';
+import { RouterLink } from '@angular/router';
+import {NavbarComponent} from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-restaurants',
   templateUrl: './restaurants.component.html',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    NavbarComponent
   ],
   styleUrls: ['./restaurants.component.css']
 })
 export class RestaurantsComponent implements OnInit {
   restaurants: any[] = [];
+  searchQuery: string = '';
 
   constructor(private restaurantsService: RestaurantsService) {}
 
   ngOnInit(): void {
     this.restaurantsService.getRestaurants().subscribe({
       next: (data) => {
-        this.restaurants = data.data; // ✅ Respuesta exitosa
-        console.log('✅ Restaurantes obtenidos correctamente:', this.restaurants);
+        this.restaurants = data.data;
       },
       error: (error) => {
-        console.error('❌ Error al obtener restaurantes:', error);
         alert('Error al obtener restaurantes: ' + error.error.message);
-      },
-      complete: () => {
-        console.log('🎉 Petición completada con éxito');
       }
     });
+  }
+
+  filterRestaurants(): any[] {
+    if (!this.searchQuery.trim()) {
+      return this.restaurants;
+    }
+    return this.restaurants.filter(restaurant =>
+      restaurant.nombre.toLowerCase().startsWith(this.searchQuery.toLowerCase())
+    );
+  }
+
+  // Función que recibe la búsqueda del navbar
+  updateSearchQuery(query: string) {
+    this.searchQuery = query;
   }
 }

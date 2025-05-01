@@ -19,6 +19,13 @@ export class Restaurante {
 
     @Prop({ default: [] })
     opiniones: string[];
+
+    @Prop({ required: false })
+    imagen?: string;
+
+    @Prop({ required: false })
+    descripcion?: string;
+
 }
 
 export const RestauranteSchema = SchemaFactory.createForClass(Restaurante);

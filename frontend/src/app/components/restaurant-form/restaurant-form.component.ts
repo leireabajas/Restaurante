@@ -17,7 +17,8 @@ export class RestaurantFormComponent implements OnInit {
     nombre: '',
     ubicacion: '',
     tipoComida: '',
-    capacidad: 0
+    capacidad: 0,
+    imagen: ''
   };
   id: string | null = null;
 
