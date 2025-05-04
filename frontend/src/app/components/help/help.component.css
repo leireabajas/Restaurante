@@ -1,0 +1,19 @@
+.page {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.faq-list {
+  list-style: none;
+  padding: 0;
+}
+
+.faq-list li {
+  margin-bottom: 1.5rem;
+}
+
+.faq-list strong {
+  display: block;
+  margin-bottom: 0.5rem;
+}

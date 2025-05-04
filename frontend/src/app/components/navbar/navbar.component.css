@@ -1,44 +1,77 @@
+/* 1) Contenedor flex sin wrapping para que todo quede en la misma línea */
 .navbar {
-  background-color: #f8f9fa;
-  padding: 10px 30px;
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: #f8f9fa;
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-.logo {
-  font-size: 1.5rem;
+/* 2) Logo grande, sin subrayado */
+.logo a {
+  font-size: 2.5rem;
   font-weight: bold;
+  color: #343a40;
+  text-decoration: none;
+  line-height: 1;
+}
+
+/* 3) Links del centro */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  /* asegurar que no se reduzcan demasiado */
+  flex-shrink: 0;
+}
+
+.nav-links a {
+  color: #343a40;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s, border-bottom 0.2s;
+}
+
+.nav-links a:hover {
+  color: #0d6efd;
+  border-bottom: 2px solid #0d6efd;
+}
+
+/* 4) Bloque de login/logout/admin al final */
+.auth-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  /* no permitir que se encoja ni se mueva */
+  flex-shrink: 0;
+}
+
+/* 5) Botones limpios */
+.auth-links .btn {
+  font-size: 0.9rem;
+  background: transparent;
+  border: 1px solid #343a40;
+  border-radius: 4px;
+  padding: 0.25rem 0.75rem;
+  text-decoration: none;
+  color: #343a40;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.auth-links .btn:hover {
+  background: #343a40;
+  color: #fff;
+}
+
+/* 6) Texto de bienvenida */
+.auth-links span {
+  font-size: 0.95rem;
   color: #343a40;
 }
 
-.search-bar {
-  display: flex;
-  gap: 8px;
-}
-
-.search-bar input {
-  padding: 6px 10px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-}
-
-.search-bar button {
-  background-color: #0d6efd;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.search-bar button:hover {
-  background-color: #0b5ed7;
-}
-
-.admin-link a {
-  text-decoration: none;
-  color: #0d6efd;
+/* 7) Botón Admin un poco distinto */
+.admin-btn {
   font-weight: bold;
 }

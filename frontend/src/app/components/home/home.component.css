@@ -1,0 +1,87 @@
+/* src/app/components/home/home.component.css */
+
+/* 🏞️ Hero con imagen de fondo y overlay */
+.home-hero {
+  position: relative;
+  background: url('/assets/images/restaurante.jpg') center/cover no-repeat;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.home-hero .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+.subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: #ddd;
+}
+.search-wrapper {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+.search-wrapper input {
+  padding: 0.75rem 1rem;
+  width: 300px;
+  border: none;
+  border-radius: 4px;
+}
+.search-wrapper button {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: #0d6efd;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.search-wrapper button:hover {
+  background: #0b5ed7;
+}
+
+/* 🍽️ Categorías */
+.categories-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.categories-section .badge {
+  font-size: 0.9rem;
+  padding: 0.5em 0.75em;
+  cursor: pointer;
+}
+.categories-section .badge:hover {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+/* ✨ Animación fade-in */
+.fade-in {
+  animation: fadeIn 0.5s ease both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 📇 Tarjetas de destacados */
+.restaurant-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.restaurant-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}

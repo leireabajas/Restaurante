@@ -1,24 +1,39 @@
 <nav class="navbar">
-  <div class="logo">🍴 RestauranteApp</div>
-
-  <div class="search-bar">
-    <input
-      type="text"
-      [(ngModel)]="searchQuery"
-      (input)="onSearchChange()"
-      placeholder="🔍 Buscar restaurante..."
-    />
+  <!-- Logo -->
+  <div class="logo">
+    <a routerLink="/">🍴 RestauranteApp</a>
   </div>
 
-  <!-- Mensaje de usuario y logout -->
-  <div class="user-info" *ngIf="userEmail">
-    ¡Hola, {{ userEmail }}!
-    <button (click)="onLogout()" class="btn btn-sm btn-outline-light ms-2">
-      🚪 Logout
-    </button>
+  <!-- Enlaces centrales sin “Mis Reservas” -->
+  <div class="nav-links">
+    <a routerLink="/" class="nav-link">Inicio</a>
+    <a routerLink="/restaurants" class="nav-link">Restaurantes</a>
+    <a routerLink="/about" class="nav-link">Sobre Nosotros</a>
+    <a routerLink="/contact" class="nav-link">Contacto</a>
+    <a routerLink="/help" class="nav-link">Ayuda</a>
   </div>
 
-  <div class="admin-link" *ngIf="auth.getUserRole() === 'admin'">
-    <a routerLink="/admin">⚙️ Administración</a>
+  <div class="auth-links">
+    @if (!username) {
+      <a routerLink="/login" class="btn">📝 Iniciar sesión</a>
+    } @else {
+      <!-- Saludo -->
+      <span class="welcome">¡Hola, {{ username }}!</span>
+
+      <!-- Nuevo link Perfil -->
+      <a routerLink="/profile" class="btn">👤 Perfil</a>
+
+      <!-- Mis Reservas de cliente -->
+      <a routerLink="/my-reservations" class="btn">📋 Mis Reservas</a>
+
+      <!-- Cerrar sesión -->
+      <button (click)="onLogout()" class="btn">🚪 Cerrar sesión</button>
+
+      <!-- Admin -->
+      @if (auth.getUserRole() === 'admin') {
+        <a routerLink="/admin" class="btn admin-btn">⚙️ Administración</a>
+      }
+    }
   </div>
+
 </nav>

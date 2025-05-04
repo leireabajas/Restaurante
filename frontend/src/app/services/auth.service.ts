@@ -1,7 +1,7 @@
 
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -25,24 +25,21 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   /** LOGIN */
-  login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(
-      `${this.apiUrl}/auth/login`,
-      { email, password }
+  login(identifier: string, password: string) {
+    return this.http.post<{ access_token: string }>(
+      `${environment.apiUrl}/auth/login`,
+      { identifier, password }
     );
   }
 
   /** REGISTER */
-  register(
-    email: string,
-    password: string,
-    role: 'usuario' | 'admin' = 'usuario'
-  ): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(
-      `${this.apiUrl}/auth/register`,
-      { email, password, role }
+  register(username: string, email: string, password: string, phone?: string) {
+    return this.http.post<{ access_token: string }>(
+      `${environment.apiUrl}/auth/register`,
+      { username, email, password, phone }
     );
   }
+
 
   /** Guarda el token en localStorage */
   saveToken(token: string): void {
@@ -71,6 +68,17 @@ export class AuthService {
     }
   }
 
+  getUsername(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1])) as any;
+      return payload.username;
+    } catch {
+      return null;
+    }
+  }
+
   /** Decodifica el JWT y extrae el role */
   getUserRole(): 'usuario' | 'admin' | null {
     const token = this.getToken();
@@ -81,5 +89,16 @@ export class AuthService {
     } catch {
       return null;
     }
+  }
+  changePassword(currentPassword: string, newPassword: string) {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : ''
+    });
+    return this.http.post<{ message: string }>(
+      `${environment.apiUrl}/auth/change-password`,
+      { currentPassword, newPassword },
+      { headers }
+    );
   }
 }

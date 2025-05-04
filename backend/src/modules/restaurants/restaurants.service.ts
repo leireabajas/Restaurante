@@ -7,7 +7,10 @@ import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 
 @Injectable()
 export class RestaurantsService {
-    constructor(@InjectModel(Restaurante.name) private restaurantModel: Model<RestauranteDocument>) {}
+    constructor(
+        @InjectModel(Restaurante.name)
+        private restaurantModel: Model<RestauranteDocument>,
+    ) {}
 
     async findAll(): Promise<Restaurante[]> {
         return this.restaurantModel.find().exec();
@@ -33,7 +36,8 @@ export class RestaurantsService {
     async delete(id: string): Promise<void> {
         const restaurante = await this.restaurantModel.findById(id);
         if (!restaurante) throw new NotFoundException('Restaurante no encontrado');
-
-        await this.restaurantModel.findByIdAndDelete(id).exec();
+        await this.restaurantModel.findByIdAndDelete(id);
     }
+
+
 }

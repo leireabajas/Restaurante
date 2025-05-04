@@ -1,46 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { RestaurantsService } from '../../services/restaurants.service';
 import { RouterLink } from '@angular/router';
+import {FormsModule} from '@angular/forms';
 import {NavbarComponent} from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-restaurants',
-  templateUrl: './restaurants.component.html',
   standalone: true,
-  imports: [
-    RouterLink,
-    NavbarComponent
-  ],
+  imports: [RouterLink, FormsModule, NavbarComponent],
+  templateUrl: './restaurants.component.html',
   styleUrls: ['./restaurants.component.css']
 })
 export class RestaurantsComponent implements OnInit {
-  restaurants: any[] = [];
+  allRestaurants: any[] = [];
+  filteredRestaurants: any[] = [];
   searchQuery: string = '';
 
-  constructor(private restaurantsService: RestaurantsService) {}
+  constructor(private rs: RestaurantsService) {}
 
   ngOnInit(): void {
-    this.restaurantsService.getRestaurants().subscribe({
-      next: (data) => {
-        this.restaurants = data.data;
-      },
-      error: (error) => {
-        alert('Error al obtener restaurantes: ' + error.error.message);
-      }
+    this.rs.getRestaurants().subscribe(res => {
+      this.allRestaurants = res.data || res;
+      this.applySearch();
     });
   }
 
-  filterRestaurants(): any[] {
-    if (!this.searchQuery.trim()) {
-      return this.restaurants;
-    }
-    return this.restaurants.filter(restaurant =>
-      restaurant.nombre.toLowerCase().startsWith(this.searchQuery.toLowerCase())
-    );
+  onSearchChange(): void {
+    this.applySearch();
   }
 
-  // Función que recibe la búsqueda del navbar
-  updateSearchQuery(query: string) {
-    this.searchQuery = query;
+  private applySearch() {
+    const term = this.searchQuery.toLowerCase();
+    this.filteredRestaurants = this.allRestaurants.filter(r =>
+      !term ||
+      r.nombre.toLowerCase().includes(term) ||
+      r.ubicacion.toLowerCase().includes(term) ||
+      r.tipoComida.toLowerCase().includes(term)
+    );
   }
 }
