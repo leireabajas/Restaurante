@@ -1,56 +1,22 @@
-/* Estilo para el modal */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1050;
-  left: 0;
-  top: 0;
-  width: 100%;
+/* styles.css */
+
+/* 1. html y body al 100% */
+html, body {
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
-  transition: opacity 0.3s ease;
+  margin: 0;
+  padding: 0;
 }
 
-.modal.show {
-  display: block;
-  opacity: 1;
-}
-
-.modal-dialog {
-  margin: 10% auto;
-  max-width: 500px;
-}
-
-.modal-content {
-  border-radius: 12px;
-  background: white;
-  padding: 20px;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-.modal-header {
+/* 2. app-root como contenedor flex vertical */
+app-root {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  min-height: 100%;    /* asegúrate de que ocupe el alto completo */
 }
 
-.modal-footer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.modal-body {
-  padding: 10px 0;
-}
-
-.modal-title {
-  font-weight: bold;
-}
-
-button {
-  border-radius: 8px;
-}
-
-input.form-control {
-  border-radius: 8px;
+/* 3. tu contenedor de contenido principal estira */
+main.app-content {
+  flex: 1;             /* ocupa todo el espacio sobrante */
+  /* opcional: margen/padding según tu diseño */
+  padding: 1rem 0;
 }

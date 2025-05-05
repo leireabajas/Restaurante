@@ -1,45 +1,61 @@
-<h2>Mis Reservas</h2>
-@for (reservation of reservations; track reservation._id) {
-  <li class="list-group-item reservation-card mb-4">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
-      <div class="reservation-info">
-        <h5 class="fw-bold text-primary mb-1">
-          {{ reservation.restaurante?.nombre || 'Restaurante desconocido' }}
-        </h5>
+<div class="reservations-container px-3 py-4">
+  <h2 class="reservations-title">🗓️ Mis Reservas</h2>
 
-        <div class="mb-2 text-muted small">
-          📅 {{ reservation.fecha | date:'fullDate' }} - 🕒 {{ reservation.fecha | date:'shortTime' }}<br />
-          👥 <strong>{{ reservation.numeroPersonas }}</strong> personas
+  <!-- Grid de tarjetas -->
+  <div class="row g-4">
+    @for (reservation of reservations; track reservation._id) {
+      <div class="col-12 col-md-6 col-lg-4 d-flex">
+        <div class="reservation-card hover-shadow w-100 d-flex flex-column">
+
+          <!-- Encabezado con nombre y estado -->
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-name mb-0">{{ reservation.restaurante?.nombre || '—' }}</h5>
+            @if (reservation.estado === 'pendiente') {
+              <span class="badge bg-warning text-dark">⏳ Pendiente</span>
+            } @else if (reservation.estado === 'confirmada') {
+              <span class="badge bg-success">✅ Confirmada</span>
+            } @else {
+              <span class="badge bg-secondary">❌ Cancelada</span>
+            }
+          </div>
+
+          <!-- Body con detalles -->
+          <div class="card-body flex-grow-1">
+            <p class="mb-2">
+              📅 <strong>Fecha:</strong>
+              {{ reservation.fecha | date:'fullDate' }}<br />
+              🕒 {{ reservation.fecha | date:'shortTime' }}
+            </p>
+            <p class="mb-0">
+              👥 <strong>Personas:</strong> {{ reservation.numeroPersonas }}
+            </p>
+          </div>
+
+          <!-- Footer con acciones -->
+          <div class="card-footer d-flex gap-2">
+            @if (userRole === 'usuario') {
+              <a
+                [routerLink]="['/edit-reservation', reservation._id]"
+                class="btn btn-edit flex-fill"
+              >
+                ✏️ Editar
+              </a>
+            }
+            <button
+              class="btn btn-cancel flex-fill"
+              (click)="deleteReservation(reservation._id)"
+            >
+              🗑️ Cancelar
+            </button>
+          </div>
+
         </div>
-
-        <!-- Estado -->
-        @if (reservation.estado === 'pendiente') {
-          <span class="badge rounded-pill bg-warning text-dark">⏳ Pendiente</span>
-        } @else if (reservation.estado === 'confirmada') {
-          <span class="badge rounded-pill bg-success">✅ Confirmada</span>
-        } @else if (reservation.estado === 'cancelada') {
-          <span class="badge rounded-pill bg-secondary">❌ Cancelada</span>
-        }
       </div>
+    }
+  </div>
 
-      <div class="reservation-actions d-flex gap-2 mt-2 flex-wrap justify-content-end">
-        @if (userRole === 'usuario') {
-          <a
-            [routerLink]="['/edit-reservation', reservation._id]"
-            class="btn btn-edit btn-sm px-3 fw-semibold d-flex align-items-center"
-          >
-            ✏️ <span class="ms-1">Editar</span>
-          </a>
-        }
-
-        <button
-          class="btn btn-cancel btn-sm px-3 fw-semibold d-flex align-items-center"
-          (click)="deleteReservation(reservation._id)"
-        >
-          🗑️ <span class="ms-1">Cancelar</span>
-        </button>
-      </div>
-
-    </div>
-  </li>
-}
+  <!-- Empty state -->
+  @if (reservations.length === 0) {
+    <p class="text-center text-muted mt-5">No tienes reservas aún.</p>
+  }
+</div>

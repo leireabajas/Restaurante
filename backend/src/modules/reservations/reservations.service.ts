@@ -19,10 +19,16 @@ export class ReservationsService {
         return reservation;
     }
 
-    async create(createReservationDto: CreateReservationDto, userId: any): Promise<Reserva> {
-        const newReservation = new this.reservationModel(createReservationDto);
+
+    async create(createReservationDto: CreateReservationDto, userId: string): Promise<Reserva> {
+        const data = {
+            ...createReservationDto,
+            usuario: userId
+        };
+        const newReservation = new this.reservationModel(data);
         return newReservation.save();
     }
+
 
     async update(id: string, updateReservationDto: UpdateReservationDto, userId: any): Promise<Reserva> {
         const updatedReservation = await this.reservationModel.findByIdAndUpdate(id, updateReservationDto, { new: true });

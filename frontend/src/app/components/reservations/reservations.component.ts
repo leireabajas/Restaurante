@@ -8,9 +8,7 @@ import {RouterLink} from '@angular/router';
   templateUrl: './reservations.component.html',
   standalone: true,
   imports: [
-    NgFor,
     DatePipe,
-    JsonPipe,
     RouterLink
   ],
   styleUrls: ['./reservations.component.css']

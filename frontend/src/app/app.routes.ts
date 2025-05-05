@@ -1,37 +1,40 @@
+// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 
-import { HomeComponent }                from './components/home/home.component';
-import { RestaurantsComponent }         from './components/restaurants/restaurants.component';
-import { RestaurantFormComponent }      from './components/restaurant-form/restaurant-form.component';
-import { ReservationsComponent }        from './components/reservations/reservations.component';
-import { ReservationFormComponent }     from './components/reservation-form/reservation-form.component';
-import { AdminDashboardComponent }      from './components/admin-dashboard/admin-dashboard.component';
-import { RestaurantDetailComponent }    from './components/restaurant-detail/restaurant-detail.component';
-import { LoginComponent }               from './components/login/login.component';
-import { RegisterComponent }            from './components/register/register.component';
-import { ContactComponent }             from './components/contact/contact.component';
-import { AboutComponent }               from './components/about/about.component';
-import { HelpComponent }                from './components/help/help.component';
-import { ProfileComponent }             from './components/profile/profile.component';
+// 🌐 Público
+import { HomeComponent }            from './components/home/home.component';
+import { LoginComponent }           from './components/login/login.component';
+import { RegisterComponent }        from './components/register/register.component';
 
-import { AuthGuard } from './guards/auth.guard';
+// 📋 Catálogo y detalle
+import { RestaurantsComponent }     from './components/restaurants/restaurants.component';
+import { RestaurantDetailComponent }from './components/restaurant-detail/restaurant-detail.component';
+
+// 🔒 Reservas (usuarios autenticados)
+import { ReservationsComponent }    from './components/reservations/reservations.component';
+import { ReservationFormComponent } from './components/reservation-form/reservation-form.component';
+
+// ⚙️ Administración
+import { AdminDashboardComponent }  from './components/admin-dashboard/admin-dashboard.component';
+import { AdminRestaurantsComponent }   from './components/admin-restaurants/admin-restaurants.component';
+import { RestaurantFormComponent }  from './components/restaurant-form/restaurant-form.component';
+import { UsersComponent }           from './components/users/users.component';
+import { ReservationsAdminComponent } from './components/reservations-admin/reservations-admin.component';
+
+// 🛡️ Guards
+import { AuthGuard }  from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   // 🏠 Home público
   { path: '', component: HomeComponent },
 
-  // 🔓 Autenticación pública
+  // 🔓 Autenticación
   { path: 'login',    component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
-  // 📋 Páginas informativas
-  { path: 'contact', component: ContactComponent },
-  { path: 'about',   component: AboutComponent },
-  { path: 'help',    component: HelpComponent },
-
-  // 🍽️ Restaurantes (catálogo y detalle)
-  { path: 'restaurants',           component: RestaurantsComponent },
+  // 📋 Restaurantes (público)
+  { path: 'restaurants',          component: RestaurantsComponent },
   { path: 'restaurant-detail/:id', component: RestaurantDetailComponent },
 
   // 🔒 Reservas (sólo usuarios logueados)
@@ -51,32 +54,28 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
-  // 🛠️ Gestión de restaurantes (admins)
-  {
-    path: 'new-restaurant',
-    component: RestaurantFormComponent,
-    canActivate: [AuthGuard, AdminGuard]
-  },
-  {
-    path: 'edit-restaurant/:id',
-    component: RestaurantFormComponent,
-    canActivate: [AuthGuard, AdminGuard]
-  },
-
-  // 👤 Perfil de usuario (sólo logueados)
-  {
-    path: 'profile',
-    component: ProfileComponent,
-    canActivate: [AuthGuard]
-  },
-
-  // ⚙️ Panel admin general
+  // ⚙️ Panel de Administración (sólo admins)
   {
     path: 'admin',
     component: AdminDashboardComponent,
-    canActivate: [AuthGuard, AdminGuard]
+    canActivate: [AuthGuard, AdminGuard],
+    children: [
+      // redirige al listado de restaurantes admin
+      { path: '', redirectTo: 'restaurants', pathMatch: 'full' },
+
+      // 🛠️ Gestión de Restaurantes
+      { path: 'restaurants',                   component: AdminRestaurantsComponent },
+      { path: 'restaurants/new-restaurant',    component: RestaurantFormComponent, canActivate: [AuthGuard, AdminGuard] },
+      { path: 'restaurants/edit-restaurant/:id', component: RestaurantFormComponent, canActivate: [AuthGuard, AdminGuard] },
+
+      // 👥 Gestión de Usuarios
+      { path: 'users',                         component: UsersComponent },
+
+      // 📅 Gestión de Reservas
+      { path: 'reservations-admin',            component: ReservationsAdminComponent },
+    ]
   },
 
-  // 🔄 Cualquier otra → home
+  // 🔄 Cualquier otra ruta → Home
   { path: '**', redirectTo: '' }
 ];

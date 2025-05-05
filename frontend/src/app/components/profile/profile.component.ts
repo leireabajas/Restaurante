@@ -1,25 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { FormsModule } from '@angular/forms';
+import { AuthService }      from '../../services/auth.service';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [FormsModule],
   templateUrl: './profile.component.html',
+  imports: [
+    FormsModule
+  ],
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  email: string | null = '';
-  currentPassword: string = '';
-  newPassword: string = '';
-  confirmPassword: string = '';
-  message: string = '';
+  currentPassword = '';
+  newPassword     = '';
+  confirmPassword = '';
+  message         = '';
 
-  constructor(private auth: AuthService) {}
+  constructor(public auth: AuthService) {}
 
   ngOnInit() {
-    this.email = this.auth.getUserEmail();
+    // No-op: mostramos datos vía auth.getUsername() / getUserEmail()
   }
 
   onChangePassword() {
@@ -29,7 +30,7 @@ export class ProfileComponent implements OnInit {
       return;
     }
     if (this.newPassword !== this.confirmPassword) {
-      this.message = 'La contraseña nueva y su confirmación no coinciden.';
+      this.message = 'La nueva contraseña y su confirmación no coinciden.';
       return;
     }
 
@@ -38,7 +39,7 @@ export class ProfileComponent implements OnInit {
         next: res => {
           this.message = res.message || '¡Contraseña cambiada con éxito!';
           this.currentPassword = '';
-          this.newPassword = '';
+          this.newPassword     = '';
           this.confirmPassword = '';
         },
         error: err => {
@@ -46,5 +47,4 @@ export class ProfileComponent implements OnInit {
         }
       });
   }
-
 }

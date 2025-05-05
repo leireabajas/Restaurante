@@ -1,13 +1,12 @@
-<input type="text" [(ngModel)]="searchQuery" placeholder="Buscar por usuario" />
 
-<ul>
-  @for (reservation of filterReservations(); track reservation._id) {
-    <li>
-      <strong>Usuario:</strong> {{ reservation.usuario }} <br />
-      <strong>Fecha:</strong> {{ reservation.fecha | date:'short' }} <br />
+<div class="admin-dashboard container my-4">
+  <h1 class="mb-4">⚙️ Panel de Administración</h1>
 
-      <a [routerLink]="['/edit-reservation', reservation._id]">✏️ Editar</a>
-      <button (click)="deleteReservation(reservation._id)">🗑️ Eliminar</button>
-    </li>
-  }
-</ul>
+  <nav class="admin-nav mb-4">
+    <a routerLink="restaurants" routerLinkActive="active">Restaurantes</a>
+    <a routerLink="users"       routerLinkActive="active">Usuarios</a>
+    <a routerLink="reservations-admin" routerLinkActive="active">Reservas</a>
+  </nav>
+
+  <router-outlet></router-outlet>
+</div>

@@ -29,6 +29,7 @@ export class AuthController {
         return this.authService.register(body);
     }
 
+
     @UseGuards(JwtAuthGuard)
     @Post('change-password')
     async changePassword(

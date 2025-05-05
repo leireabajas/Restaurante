@@ -7,7 +7,7 @@ import {NavbarComponent} from '../navbar/navbar.component';
 @Component({
   selector: 'app-restaurants',
   standalone: true,
-  imports: [RouterLink, FormsModule, NavbarComponent],
+  imports: [RouterLink, FormsModule],
   templateUrl: './restaurants.component.html',
   styleUrls: ['./restaurants.component.css']
 })

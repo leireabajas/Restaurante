@@ -1,38 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RestaurantsService } from '../../services/restaurants.service';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RestaurantsService }     from '../../services/restaurants.service';
+import { AuthService }            from '../../services/auth.service';
 
 @Component({
   selector: 'app-restaurant-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
   templateUrl: './restaurant-detail.component.html',
-  styleUrl: './restaurant-detail.component.css'
+  styleUrls: ['./restaurant-detail.component.css']
 })
 export class RestaurantDetailComponent implements OnInit {
   restaurant: any = null;
-  id: string | null = null;
+  isLoggedIn = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private restaurantsService: RestaurantsService
+    private rs: RestaurantsService,
+    private auth: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id');
-    if (this.id) {
-      this.restaurantsService.getRestaurantById(this.id).subscribe({
-        next: (data) => {
-          this.restaurant = data.data || data; // según cómo devuelve tu API
-        },
-        error: () => {
-          alert('Error al cargar el restaurante');
-          this.router.navigate(['/restaurants']);
-        }
+    this.isLoggedIn = !!this.auth.getToken();
+
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.rs.getRestaurantById(id).subscribe({
+        next: res => this.restaurant = res.data || res,
+        error: () => alert('Error al cargar detalles del restaurante')
+      });
+    }
+  }
+
+  onReserve(): void {
+    if (this.isLoggedIn) {
+      // Usuario logueado → formulario de reserva con query param
+      this.router.navigate(['/new-reservation'], {
+        queryParams: { restaurante: this.restaurant._id }
+      });
+    } else {
+      // No logueado → lo llevamos al login antes de reservar
+      this.router.navigate(['/login'], {
+        queryParams: { redirect: `/restaurant-detail/${this.restaurant._id}` }
       });
     }
   }
 }
+

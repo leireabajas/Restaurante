@@ -1,20 +1,32 @@
+<!-- src/app/components/home/home.component.html -->
+<section class="home-hero">
+  <!-- Imagen de fondo -->
+  <img
+    src="/assets/images/restaurante.jpg"
+    alt="Fondo Restaurante"
+    class="hero-bg-img"
+  />
 
-<!-- Hero + Buscador global -->
-<section class="home-hero text-center text-white">
+  <!-- Capa semitransparente -->
   <div class="overlay"></div>
-  <div class="hero-content">
+
+  <!-- Contenido encima -->
+  <div class="hero-content text-center">
     <h1>🍴 Bienvenido a RestauranteApp</h1>
     <p class="subtitle">Encuentra tu próximo rincón favorito</p>
+
     <div class="search-wrapper">
       <input
         type="text"
         [(ngModel)]="searchQuery"
         placeholder="Busca por nombre, tipo o ciudad..."
+        (keydown.enter)="onSearch()"
       />
       <button (click)="onSearch()">🔍 Buscar</button>
     </div>
   </div>
 </section>
+
 
 <div class="container my-5">
   <!-- Categorías por tipo de comida -->
@@ -30,25 +42,21 @@
   </div>
 
   <!-- Restaurantes Destacados -->
-  <div class="featured-section mb-5">
+  <section class="featured-section mb-5">
     <h2 class="mb-4">✨ Restaurantes Destacados</h2>
     <div class="row g-4">
       @for (restaurant of featured; track restaurant._id) {
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
-          <div class="card restaurant-card w-100 fade-in">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
+          <div class="card restaurant-card fade-in">
             <img
               [src]="restaurant.imagen || 'https://via.placeholder.com/300x200?text=Restaurante'"
-              class="card-img-top"
+              class="card-img-top restaurant-image"
               alt="Imagen Restaurante"
             />
             <div class="card-body d-flex flex-column">
               <h5 class="card-title">{{ restaurant.nombre }}</h5>
-              <p class="card-text text-muted small mb-1">
-                📍 {{ restaurant.ubicacion }}
-              </p>
-              <p class="card-text text-muted small mb-3">
-                🍴 {{ restaurant.tipoComida }}
-              </p>
+              <p class="card-text text-muted small mb-1">📍 {{ restaurant.ubicacion }}</p>
+              <p class="card-text text-muted small mb-3">🍴 {{ restaurant.tipoComida }}</p>
               <div class="mt-auto">
                 <a
                   [routerLink]="['/restaurant-detail', restaurant._id]"
@@ -63,9 +71,9 @@
       }
     </div>
     <div class="text-center mt-4">
-      <a [routerLink]="['/restaurants']" class="btn btn-lg btn-primary">
+      <a [routerLink]="['/restaurants']" class="btn btn-lg btn-danger">
         Ver todos los restaurantes
       </a>
     </div>
-  </div>
+  </section>
 </div>

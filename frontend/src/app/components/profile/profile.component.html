@@ -1,49 +1,57 @@
-<!-- src/app/components/profile/profile.component.html -->
-<div class="page profile-page">
-  <h1>Mi Perfil</h1>
-  <p><strong>Email:</strong> {{ email }}</p>
+<div class="register-container mx-auto mt-5 p-4 bg-white rounded-2 shadow-sm" style="max-width: 400px;">
+  <h2 class="h4 text-center mb-4">👤 Mi Perfil</h2>
 
-  <hr />
+  <!-- Mostrar email y usuario -->
+  <div class="mb-4">
+    <strong>Usuario:</strong> {{ auth.getUsername() || '–' }}<br/>
+    <strong>Correo:</strong> {{ auth.getUserEmail() || '–' }}
+  </div>
 
-  <h2>Cambiar contraseña</h2>
-  <form (submit)="onChangePassword()" class="password-form">
-    <div class="form-group">
-      <label for="current">Contraseña actual</label>
+  <hr/>
+
+  <h3 class="h5 mb-3">🔑 Cambiar Contraseña</h3>
+  <form (submit)="onChangePassword()" novalidate>
+    <div class="mb-3">
+      <label for="currentPassword" class="form-label">Contraseña actual</label>
       <input
-        id="current"
+        id="currentPassword"
         type="password"
+        class="form-control"
         [(ngModel)]="currentPassword"
         name="currentPassword"
         required
       />
     </div>
-
-    <div class="form-group">
-      <label for="new">Nueva contraseña</label>
+    <div class="mb-3">
+      <label for="newPassword" class="form-label">Nueva contraseña</label>
       <input
-        id="new"
+        id="newPassword"
         type="password"
+        class="form-control"
         [(ngModel)]="newPassword"
         name="newPassword"
         required
       />
     </div>
-
-    <div class="form-group">
-      <label for="confirm">Confirmar nueva contraseña</label>
+    <div class="mb-3">
+      <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
       <input
-        id="confirm"
+        id="confirmPassword"
         type="password"
+        class="form-control"
         [(ngModel)]="confirmPassword"
         name="confirmPassword"
         required
       />
     </div>
-
-    <button type="submit">Cambiar contraseña</button>
-
-    @if (message) {
-      <p class="message">{{ message }}</p>
-    }
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary w-100 fw-semibold">
+        🔄 Cambiar contraseña
+      </button>
+    </div>
   </form>
+
+  @if (message) {
+    <div class="alert alert-info mt-3">{{ message }}</div>
+  }
 </div>

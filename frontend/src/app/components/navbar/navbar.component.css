@@ -1,19 +1,21 @@
+/* src/app/components/navbar/navbar.component.css */
+
 /* 1) Contenedor flex sin wrapping para que todo quede en la misma línea */
 .navbar {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1.5rem;
-  background: #f8f9fa;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  padding: 12px 24px;
+  background: #E63946;            /* ahora rojo tomate */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* 2) Logo grande, sin subrayado */
 .logo a {
-  font-size: 2.5rem;
+  font-size: 40px;
   font-weight: bold;
-  color: #343a40;
+  color: #FFFFFF;                  /* blanco */
   text-decoration: none;
   line-height: 1;
 }
@@ -21,54 +23,52 @@
 /* 3) Links del centro */
 .nav-links {
   display: flex;
-  gap: 1.5rem;
-  /* asegurar que no se reduzcan demasiado */
+  gap: 24px;
   flex-shrink: 0;
 }
 
 .nav-links a {
-  color: #343a40;
+  color: #FFFFFF;                  /* blanco */
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s, border-bottom 0.2s;
 }
 
 .nav-links a:hover {
-  color: #0d6efd;
-  border-bottom: 2px solid #0d6efd;
+  color: #FFD7DB;                  /* rosa muy claro al hover */
+  border-bottom: 2px solid #FFD7DB;
 }
 
 /* 4) Bloque de login/logout/admin al final */
 .auth-links {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  /* no permitir que se encoja ni se mueva */
+  gap: 12px;
   flex-shrink: 0;
 }
 
 /* 5) Botones limpios */
 .auth-links .btn {
-  font-size: 0.9rem;
+  font-size: 14px;
   background: transparent;
-  border: 1px solid #343a40;
+  border: 1px solid #FFFFFF;        /* borde blanco */
   border-radius: 4px;
-  padding: 0.25rem 0.75rem;
+  padding: 4px 12px;
   text-decoration: none;
-  color: #343a40;
+  color: #FFFFFF;                    /* texto blanco */
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
 
 .auth-links .btn:hover {
-  background: #343a40;
-  color: #fff;
+  background: #FFFFFF;               /* fondo blanco */
+  color: #E63946;                    /* texto rojo */
 }
 
 /* 6) Texto de bienvenida */
 .auth-links span {
-  font-size: 0.95rem;
-  color: #343a40;
+  font-size: 15px;
+  color: #FFFFFF;                    /* blanco */
 }
 
 /* 7) Botón Admin un poco distinto */
