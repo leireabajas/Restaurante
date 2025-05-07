@@ -1,11 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {ReservationsService} from '../../services/reservations.service';
+
 
 @Component({
   selector: 'app-reservations-admin',
-  imports: [],
   templateUrl: './reservations-admin.component.html',
-  styleUrl: './reservations-admin.component.css'
+  styleUrls: ['./reservations-admin.component.css']
 })
-export class ReservationsAdminComponent {
+export class ReservationsAdminComponent implements OnInit {
+  reservas: any[] = [];
 
+  constructor(private reservationsService: ReservationsService) {}
+
+  ngOnInit(): void {
+    this.reservationsService.getReservasPropietario().subscribe({
+      next: (data: any[]) => this.reservas = data,
+      error: (err: any) => console.error('Error al cargar reservas del propietario', err)
+    });
+  }
 }

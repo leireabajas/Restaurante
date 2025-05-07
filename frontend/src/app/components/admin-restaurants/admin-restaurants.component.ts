@@ -5,27 +5,27 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-admin-restaurants',
   standalone: true,
-  templateUrl: './admin-restaurants.component.html',
-  styleUrls: ['./admin-restaurants.component.css'],
   imports: [RouterLink],
+  templateUrl: './admin-restaurants.component.html',
+  styleUrls: ['./admin-restaurants.component.css']
 })
 export class AdminRestaurantsComponent implements OnInit {
   restaurants: any[] = [];
 
-  constructor(private restaurantsService: RestaurantsService) {}
+  constructor(private svc: RestaurantsService) {}
 
   ngOnInit() {
-    this.loadAll();
+    this.load();
   }
 
-  loadAll() {
-    this.restaurantsService.getRestaurants()
+  load() {
+    this.svc.getRestaurants()  // recuerda en tu service incluir el header con token admin
       .subscribe(res => this.restaurants = res.data);
   }
 
-  deleteRestaurant(id: string) {
+  delete(id: string) {
     if (!confirm('¿Eliminar este restaurante?')) return;
-    this.restaurantsService.deleteRestaurant(id)
-      .subscribe(() => this.loadAll());
+    this.svc.deleteRestaurant(id)
+      .subscribe(() => this.load());
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
@@ -7,22 +8,18 @@ export class UsersService {
 
   constructor(private http: HttpClient) {}
 
-  /** Llama a tu endpoint PATCH /users/:id */
-  updateProfile(data: { username: string; email: string }) {
-    const userId = this.getCurrentUserId();  // extrae del token o localStorage
-    return this.http.patch<{ message: string }>(
-      `${this.apiUrl}/users/${userId}`,
-      data
-    );
-  }
-
-  private getCurrentUserId(): string {
-    return this.getTokenPayload()?.sub || '';
-  }
 
   private getTokenPayload(): any {
     const token = localStorage.getItem('token');
     if (!token) return null;
     return JSON.parse(atob(token.split('.')[1]));
   }
+
+  getUserById(id: string) {
+    return this.http.get<any>(`${this.apiUrl}/users/${id}`);
+  }
+
+
+
+
 }

@@ -1,20 +1,59 @@
-/* src/app/components/admin-dashboard/admin-dashboard.component.css */
-.admin-dashboard h1 {
-  font-size: 2rem;
-  color: #E63946;
+.admin-dashboard {
+  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
 }
-.admin-nav {
-  display: flex;
-  gap: 1.5rem;
+
+.dashboard-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
-.admin-nav a {
-  text-decoration: none;
-  color: #343a40;
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: linear-gradient(to right, #f8f9fa, #e9ecef);
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
   font-weight: 500;
-  padding-bottom: 4px;
+  color: #495057;
 }
-.admin-nav a.active,
-.admin-nav a:hover {
-  border-bottom: 2px solid #E63946;
-  color: #E63946;
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+.top-title {
+  margin-top: 2rem;
+  font-weight: bold;
+  color: #212529;
+}
+.stat-card {
+  background-color: #f8f9fa;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+  cursor: pointer;
 }

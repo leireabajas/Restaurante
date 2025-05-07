@@ -1,25 +1,24 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { Restaurante } from './restaurant.schema';
 
 export type ReservaDocument = HydratedDocument<Reserva>;
 
-@Schema()
+@Schema({ collection: 'reservas' })
 export class Reserva {
-    @Prop({ type: Types.ObjectId, ref: Restaurante.name, required: true })
+    @Prop({ type: Types.ObjectId, ref: 'Usuario', required: true })
+    usuario: Types.ObjectId; // el cliente que hace la reserva
+
+    @Prop({ type: Types.ObjectId, ref: 'Restaurante', required: true })
     restaurante: Types.ObjectId;
 
     @Prop({ required: true })
-    usuario: string;
+    fecha: string; // formato 'YYYY-MM-DD'
 
     @Prop({ required: true })
-    fecha: Date;
+    hora: string; // formato 'HH:mm'
 
-    @Prop({ required: true })
+    @Prop({ required: true, min: 1 })
     numeroPersonas: number;
-
-    @Prop({ default: 'pendiente', enum: ['pendiente', 'confirmada', 'cancelada'] })
-    estado: string;
 }
 
 export const ReservaSchema = SchemaFactory.createForClass(Reserva);

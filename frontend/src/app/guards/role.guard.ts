@@ -1,39 +1,30 @@
-
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import {
+  CanActivate,
+  ActivatedRouteSnapshot,
+  Router,
+  RouterStateSnapshot
+} from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-interface JwtPayload {
-  sub: string;
-  email: string;
-  role: string;
-  exp?: number;
-}
+@Injectable({
+  providedIn: 'root'
+})
+export class RoleGuard implements CanActivate {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-@Injectable({ providedIn: 'root' })
-export class AdminGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const expectedRoles = route.data['roles'] as string[];
+    const userRole = this.authService.getUserRole();
 
-  canActivate(): boolean {
-    const token = this.auth.getToken();
-    if (!token) {
-      this.router.navigate(['/login']);
-      return false;
+    if (userRole && expectedRoles.includes(userRole)) {
+      return true;
     }
 
-    try {
-      const payload: JwtPayload = JSON.parse(atob(token.split('.')[1]));
-      if (payload.role === 'admin') {
-        return true;
-      } else {
-        alert(' Sólo admins pueden entrar aquí');
-        this.router.navigate(['/restaurants']);
-        return false;
-      }
-    } catch {
-      console.error('⚠Token inválido ');
-      this.router.navigate(['/login']);
-      return false;
-    }
+    this.router.navigate(['/unauthorized']); // o redirige al login
+    return false;
   }
 }

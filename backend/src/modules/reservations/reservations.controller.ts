@@ -14,16 +14,21 @@ import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { JwtAuthGuard } from '../auth/auth.guard';
+import {Roles} from "../../common/roles.decorator";
+import {RolesGuard} from "../../common/roles.guard";
 
 @Controller('reservations')
 export class ReservationsController {
     constructor(private readonly reservationsService: ReservationsService) {}
 
-    // ✅ Pública: se puede listar (opcional)
+
+    @UseGuards(JwtAuthGuard)
     @Get()
-    async getAllReservations() {
-        return await this.reservationsService.findAll();
+    async getUserReservations(@Request() req) {
+        const userId = req.user.userId;
+        return await this.reservationsService.findByUser(userId);
     }
+
 
     // ✅ Pública: obtener por ID (opcional)
     @Get(':id')
@@ -62,5 +67,13 @@ export class ReservationsController {
     async deleteReservation(@Param('id') id: string, @Request() req) {
         const userId = req.user.userId;
         return await this.reservationsService.delete(id, userId);
+    }
+
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('propietario')
+    @Get('mis')
+    async obtenerMisReservas(@Request() req) {
+        const propietarioId = req.user.userId; // viene del token
+        return await this.reservationsService.obtenerPorPropietario(propietarioId);
     }
 }

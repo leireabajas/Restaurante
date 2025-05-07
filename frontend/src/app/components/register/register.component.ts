@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import {Router, RouterLink} from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -11,24 +11,34 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  username = '';
-  email = '';
-  phone = '';
-  password = '';
-  error = '';
+  username   = '';
+  email      = '';
+  password   = '';
+  phone      = '';
+  inviteCode = '';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    public auth: AuthService,
+    private router: Router
+  ) {}
 
   onRegister() {
-    this.error = '';
-    this.auth.register(this.username, this.email, this.password, this.phone).subscribe({
+    this.auth.register(
+      this.username,
+      this.email,
+      this.password,
+      this.phone || undefined,
+      this.inviteCode || undefined
+    ).subscribe({
       next: () => {
-        alert('Registro exitoso');
-        this.router.navigate(['/']);
+        alert('✅ Registro exitoso');
+        this.router.navigate(['/restaurants']);
       },
       error: err => {
-        this.error = err.error?.message || 'Error en registro';
+        alert('❌ ' + (err.error?.message || 'Error al registrarte'));
       }
     });
   }
+
+
 }

@@ -1,35 +1,33 @@
-// src/app/interceptors/auth.interceptor.ts
-
+import { Injectable } from '@angular/core';
 import {
-  Injectable
-} from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent
+  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.auth.getToken();
 
     if (token) {
-      // Clonamos la petición y añadimos la cabecera
       req = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
+        setHeaders: { Authorization: `Bearer ${token}` }
       });
     }
-    return next.handle(req);
+
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 && error.error?.message?.includes('expirado')) {
+          alert('Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.');
+          this.auth.logout();
+          this.router.navigate(['/login']);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 }

@@ -1,95 +1,88 @@
-import {ConflictException, Injectable, UnauthorizedException} from '@nestjs/common';
-import {JwtService} from '@nestjs/jwt';
-import {UsersService} from '../users/users.service';
+import {
+    Injectable,
+    ConflictException,
+    UnauthorizedException
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '../users/users.service';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
+import {ConfigService} from "@nestjs/config";
+
 
 @Injectable()
 export class AuthService {
     constructor(
         private usersService: UsersService,
-        private jwtService: JwtService
-    ) {
-    }
+        private jwtService: JwtService,
+        private configService: ConfigService
+    ) {}
 
-    async validateUser(
-        identifier: string,
-        password: string
-    ): Promise<any> {
-        // 1) tratamos de buscar por email
-        let user = await this.usersService.findByEmail(identifier);
-        // 2) si no existe, por username
-        if (!user) {
-            user = await this.usersService.findByUsername(identifier);
-        }
+    // Verifica email o username + contraseña
+    async validateUser(identifier: string, password: string): Promise<any> {
+        const user = identifier.includes('@')
+            ? await this.usersService.findByEmail(identifier)
+            : await this.usersService.findByUsername(identifier);
+
         if (!user) throw new UnauthorizedException('Credenciales inválidas');
+        const valid = await bcrypt.compare(password, user.password);
+        if (!valid) throw new UnauthorizedException('Credenciales inválidas');
 
-        const isValid = await bcrypt.compare(password, user.password);
-        if (!isValid) throw new UnauthorizedException('Credenciales inválidas');
-
-        return {id: user._id, email: user.email, username: user.username, role: user.role};
+        return {
+            id:       user._id!.toString(),
+            username: user.username,
+            email:    user.email,
+            role:     user.role
+        };
     }
 
+    // Genera el JWT
     async login(user: any) {
         const payload = {
+            sub:      user.id,
             username: user.username,
-            email: user.email,
-            sub: user.id,
-            role: user.role,
+            email:    user.email,
+            role:     user.role
         };
-        return {access_token: this.jwtService.sign(payload)};
+        return { access_token: this.jwtService.sign(payload) };
     }
 
-    async register(body: {
-        username: string;
-        email: string;
-        password: string;
-        phone?: string;
-        role?: string;
-    }) {
+    async register(body: CreateUserDto & { inviteCode?: string }) {
+        const { username, email, password, phone, inviteCode } = body;
 
+        // Validación de duplicados
+        if (await this.usersService.findByEmail(email)) {
+            throw new ConflictException('Email ya existe');
+        }
+        if (await this.usersService.findByUsername(username)) {
+            throw new ConflictException('Username ya existe');
+        }
+
+        // Determinar el rol basado en el código de invitación
+        const expectedInviteCode = this.configService.get<string>('INVITE_CODE_PROPIETARIO');
+        const role = inviteCode === expectedInviteCode ? 'propietario' : 'cliente';
+
+        // Crear usuario con rol
         const newUser = await this.usersService.create({
-            username: body.username,
-            email: body.email,
-            password: body.password,
-            phone: body.phone,
-            role: (body.role as 'usuario' | 'admin') || 'usuario'
+            username,
+            email,
+            password,
+            phone,
+            role,
         });
 
-
+        // Firmar JWT
         const payload = {
             sub: newUser._id!.toString(),
-            email: newUser.email,
             username: newUser.username,
+            email: newUser.email,
             role: newUser.role,
         };
 
-        // 3️⃣ Firmamos y devolvemos el token
-        return {
-            access_token: this.jwtService.sign(payload)
-        };
+        return { access_token: this.jwtService.sign(payload) };
     }
 
 
-    async changePassword(
-        userId: string,
-        currentPassword: string,
-        newPassword: string
-    ): Promise<{ message: string }> {
-        // 1. Obtener usuario
-        const user = await this.usersService.findOne(userId);
 
-        // 2. Verificar contraseña actual
-        const valid = await bcrypt.compare(currentPassword, user.password);
-        if (!valid) throw new UnauthorizedException('Contraseña actual incorrecta');
-
-        // 3. Evitar misma contraseña
-        const same = await bcrypt.compare(newPassword, user.password);
-        if (same) throw new ConflictException('La nueva contraseña debe ser distinta');
-
-        // 4. Actualizar (UsersService.update hace el hash una sola vez)
-        await this.usersService.update(userId, {password: newPassword});
-
-        return {message: 'Contraseña cambiada con éxito'};
-    }
 
 }

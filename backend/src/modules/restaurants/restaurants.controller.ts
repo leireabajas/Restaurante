@@ -6,23 +6,23 @@ import {
     Delete,
     Body,
     Param,
-    Query,
     NotFoundException,
     InternalServerErrorException,
-    UseGuards
+    UseGuards,
+    Request
 } from '@nestjs/common';
 import { RestaurantsService } from './restaurants.service';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
-import {RolesGuard} from "../../common/roles.guard";
-import {Roles} from "../../common/roles.decorator";
+import { JwtAuthGuard } from '../auth/auth.guard';
+import { RolesGuard } from '../../common/roles.guard';
+import { Roles } from '../../common/roles.decorator';
 
-
-//@UseGuards( RolesGuard)
 @Controller('restaurants')
 export class RestaurantsController {
     constructor(private readonly restaurantsService: RestaurantsService) {}
 
+    // ✅ Público
     @Get()
     async findAll() {
         try {
@@ -32,7 +32,7 @@ export class RestaurantsController {
                 results: restaurantes.length,
                 data: restaurantes
             };
-        } catch (error) {
+        } catch {
             throw new InternalServerErrorException({
                 status: 'Error',
                 message: 'Error interno del servidor'
@@ -40,43 +40,90 @@ export class RestaurantsController {
         }
     }
 
+    // ✅ Público
     @Get(':id')
     async findOne(@Param('id') id: string) {
         try {
             const restaurante = await this.restaurantsService.findOne(id);
-            if (!restaurante) throw new NotFoundException({ status: 'Error', message: 'Restaurante no encontrado' });
+            if (!restaurante) {
+                throw new NotFoundException({
+                    status: 'Error',
+                    message: 'Restaurante no encontrado'
+                });
+            }
             return { status: 'Ok', data: restaurante };
         } catch (error) {
             if (error instanceof NotFoundException) throw error;
-            throw new InternalServerErrorException({ status: 'Error', message: 'Error interno del servidor' });
+            throw new InternalServerErrorException({
+                status: 'Error',
+                message: 'Error interno del servidor'
+            });
         }
     }
 
-    @Roles('admin')
+    // 🔐 Solo propietarios autenticados
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('propietario','admin')
     @Post()
-    async create(@Body() createRestaurantDto: CreateRestaurantDto) {
+    async create(
+        @Body() createRestaurantDto: CreateRestaurantDto,
+        @Request() req
+    ) {
         try {
-            const nuevoRestaurante = await this.restaurantsService.create(createRestaurantDto);
-            return { status: 'Ok', message: 'Restaurante creado', data: nuevoRestaurante };
-        } catch (error) {
-            throw new InternalServerErrorException({ status: 'Error', message: 'No se pudo crear el restaurante' });
+            const propietarioId = req.user.userId;
+            const nuevoRestaurante = await this.restaurantsService.create(
+                createRestaurantDto,
+                propietarioId
+            );
+            return {
+                status: 'Ok',
+                message: 'Restaurante creado',
+                data: nuevoRestaurante
+            };
+        } catch {
+            throw new InternalServerErrorException({
+                status: 'Error',
+                message: 'No se pudo crear el restaurante'
+            });
         }
     }
 
-    @Roles('admin')
+    // 🔐 Solo propietarios autenticados
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('propietario','admin')
     @Put(':id')
-    async update(@Param('id') id: string, @Body() updateRestaurantDto: UpdateRestaurantDto) {
+    async update(
+        @Param('id') id: string,
+        @Body() updateRestaurantDto: UpdateRestaurantDto
+    ) {
         try {
-            const restauranteActualizado = await this.restaurantsService.update(id, updateRestaurantDto);
-            if (!restauranteActualizado) throw new NotFoundException({ status: 'Error', message: 'Restaurante no encontrado' });
-            return { status: 'Ok', message: 'Restaurante actualizado', data: restauranteActualizado };
+            const restauranteActualizado = await this.restaurantsService.update(
+                id,
+                updateRestaurantDto
+            );
+            if (!restauranteActualizado) {
+                throw new NotFoundException({
+                    status: 'Error',
+                    message: 'Restaurante no encontrado'
+                });
+            }
+            return {
+                status: 'Ok',
+                message: 'Restaurante actualizado',
+                data: restauranteActualizado
+            };
         } catch (error) {
             if (error instanceof NotFoundException) throw error;
-            throw new InternalServerErrorException({ status: 'Error', message: 'Error interno del servidor' });
+            throw new InternalServerErrorException({
+                status: 'Error',
+                message: 'Error interno del servidor'
+            });
         }
     }
 
-    @Roles('admin')
+    // 🔐 Solo propietarios autenticados
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('propietario','admin')
     @Delete(':id')
     async delete(@Param('id') id: string) {
         try {
@@ -84,10 +131,11 @@ export class RestaurantsController {
             return { status: 'Ok', message: 'Restaurante eliminado' };
         } catch (error) {
             if (error instanceof NotFoundException) throw error;
-            throw new InternalServerErrorException({ status: 'Error', message: 'Error interno del servidor' });
+            throw new InternalServerErrorException({
+                status: 'Error',
+                message: 'Error interno del servidor'
+            });
         }
     }
-
-
 
 }

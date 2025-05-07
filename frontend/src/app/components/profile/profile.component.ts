@@ -1,50 +1,47 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService }      from '../../services/auth.service';
-import {FormsModule} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {UsersService} from '../../services/users.service';
+import {AuthService} from '../../services/auth.service';
+import {ReservationsService} from '../../services/reservations.service';
+import {CommonModule, DatePipe} from '@angular/common';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
+  imports: [CommonModule, DatePipe, RouterLink],
   templateUrl: './profile.component.html',
-  imports: [
-    FormsModule
-  ],
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  currentPassword = '';
-  newPassword     = '';
-  confirmPassword = '';
-  message         = '';
+  userData: any = null;
+  reservas: any[] = [];
 
-  constructor(public auth: AuthService) {}
+  constructor(
+    private usersService: UsersService,
+    private auth: AuthService,
+    private reservationsService: ReservationsService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
-    // No-op: mostramos datos vía auth.getUsername() / getUserEmail()
+  ngOnInit(): void {
+    const userId = this.auth.getUserId();
+    if (userId) {
+      this.usersService.getUserById(userId).subscribe({
+        next: (user) => this.userData = user,
+        error: () => alert('Error al cargar los datos del usuario')
+      });
+
+      this.reservationsService.getReservations().subscribe({
+        next: (data) => {
+          this.reservas = Array.isArray(data) ? data : data.data;
+        },
+        error: () => alert('Error al cargar reservas')
+      });
+    }
   }
 
-  onChangePassword() {
-    this.message = '';
-    if (!this.currentPassword || !this.newPassword || !this.confirmPassword) {
-      this.message = 'Por favor completa todos los campos.';
-      return;
-    }
-    if (this.newPassword !== this.confirmPassword) {
-      this.message = 'La nueva contraseña y su confirmación no coinciden.';
-      return;
-    }
-
-    this.auth.changePassword(this.currentPassword, this.newPassword)
-      .subscribe({
-        next: res => {
-          this.message = res.message || '¡Contraseña cambiada con éxito!';
-          this.currentPassword = '';
-          this.newPassword     = '';
-          this.confirmPassword = '';
-        },
-        error: err => {
-          this.message = err.error?.message || 'Error al cambiar la contraseña.';
-        }
-      });
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 }

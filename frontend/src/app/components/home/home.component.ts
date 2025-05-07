@@ -22,6 +22,8 @@ export class HomeComponent implements OnInit {
     private router: Router
   ) {}
 
+
+
   ngOnInit(): void {
     this.rs.getRestaurants().subscribe(res => {
       const list = (res.data || res) as any[];

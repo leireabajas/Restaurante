@@ -4,37 +4,35 @@
     <a routerLink="/">🍴 RestauranteApp</a>
   </div>
 
-  <!-- Enlaces centrales sin “Mis Reservas” -->
+  <!-- Enlaces centrales (visibles para todos) -->
   <div class="nav-links">
     <a routerLink="/" class="nav-link">Inicio</a>
     <a routerLink="/restaurants" class="nav-link">Restaurantes</a>
     <a routerLink="/about" class="nav-link">Sobre Nosotros</a>
     <a routerLink="/contact" class="nav-link">Contacto</a>
     <a routerLink="/help" class="nav-link">Ayuda</a>
-    <a routerLink="/admin" class="btn admin-btn">⚙️ Administración</a>
   </div>
 
+  <!-- Enlaces de usuario -->
   <div class="auth-links">
     @if (!username) {
       <a routerLink="/login" class="btn">📝 Iniciar sesión</a>
     } @else {
-      <!-- Saludo -->
       <span class="welcome">¡Hola, {{ username }}!</span>
 
-      <!-- Nuevo link Perfil -->
-      <a routerLink="/profile" class="btn">👤 Perfil</a>
+      <!-- Mostrar solo si NO es admin -->
+      @if (auth.getUserRole() !== 'admin') {
+        <a routerLink="/profile" class="btn">👤 Perfil</a>
+        <a routerLink="/reservations" class="btn">📋 Mis Reservas</a>
+      }
 
-      <!-- Mis Reservas de cliente -->
-      <a routerLink="/reservations" class="btn">📋 Mis Reservas</a>
-
-      <!-- Cerrar sesión -->
+      <!-- Siempre visible -->
       <button (click)="onLogout()" class="btn">🚪 Cerrar sesión</button>
 
-      <!-- Admin -->
+      <!-- Solo si es admin -->
       @if (auth.getUserRole() === 'admin') {
         <a routerLink="/admin" class="btn admin-btn">⚙️ Administración</a>
       }
     }
   </div>
-
 </nav>

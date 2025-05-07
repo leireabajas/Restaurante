@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Router, RouterLink, RouterModule} from '@angular/router';
 import { RestaurantsService }     from '../../services/restaurants.service';
 import { AuthService }            from '../../services/auth.service';
 
@@ -7,6 +7,9 @@ import { AuthService }            from '../../services/auth.service';
   selector: 'app-restaurant-detail',
   standalone: true,
   templateUrl: './restaurant-detail.component.html',
+  imports: [
+    RouterLink,RouterModule
+  ],
   styleUrls: ['./restaurant-detail.component.css']
 })
 export class RestaurantDetailComponent implements OnInit {
@@ -35,7 +38,7 @@ export class RestaurantDetailComponent implements OnInit {
   onReserve(): void {
     if (this.isLoggedIn) {
       // Usuario logueado → formulario de reserva con query param
-      this.router.navigate(['/new-reservation'], {
+      this.router.navigate(['/reservations/new'], {
         queryParams: { restaurante: this.restaurant._id }
       });
     } else {

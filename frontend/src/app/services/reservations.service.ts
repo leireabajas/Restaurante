@@ -54,4 +54,11 @@ export class ReservationsService {
       headers: this.authHeaders()
     });
   }
+
+  getReservasPropietario(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/mis`, {
+      headers: this.authHeaders()
+    });
+  }
+
 }

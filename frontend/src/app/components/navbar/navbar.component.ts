@@ -17,7 +17,7 @@ export class NavbarComponent {
 
 
   get username(): string | null {
-    return this.auth.getUsername();
+    return this.auth.getUserName();
   }
 
   onLogout() {

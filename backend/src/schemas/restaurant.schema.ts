@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 
 export type RestauranteDocument = HydratedDocument<Restaurante>;
 
@@ -7,6 +7,9 @@ export type RestauranteDocument = HydratedDocument<Restaurante>;
 export class Restaurante {
     @Prop({ required: true })
     nombre: string;
+
+    @Prop({ required: true })
+    direccion: string;
 
     @Prop({ required: true })
     ubicacion: string;
@@ -17,15 +20,17 @@ export class Restaurante {
     @Prop({ required: true })
     capacidad: number;
 
-    @Prop({ default: [] })
-    opiniones: string[];
+    @Prop({ required: true })
+    horario: string;
 
-    @Prop({ required: false })
+    @Prop()
     imagen?: string;
 
-    @Prop({ required: false })
+    @Prop()
     descripcion?: string;
 
+    @Prop({ type: Types.ObjectId, ref: 'Usuario', required: true })
+    propietario: Types.ObjectId;
 }
 
 export const RestauranteSchema = SchemaFactory.createForClass(Restaurante);

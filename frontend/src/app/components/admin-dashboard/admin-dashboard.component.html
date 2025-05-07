@@ -1,12 +1,43 @@
+<div class="admin-dashboard container mt-4">
+  <h2 class="dashboard-title">📊 Panel de Estadísticas</h2>
 
-<div class="admin-dashboard container my-4">
-  <h1 class="mb-4">⚙️ Panel de Administración</h1>
+  @if (estadisticas) {
+    <div class="stats-grid mb-4">
+      <div class="stat-card" (click)="toggleSection('usuarios')">
+        <span class="stat-icon">👤</span>
+        <div class="stat-label">Usuarios</div>
+        <div class="stat-value">{{ estadisticas.totalUsuarios }}</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🏬</span>
+        <div class="stat-label">Restaurantes</div>
+        <div class="stat-value">{{ estadisticas.totalRestaurantes }}</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">📅</span>
+        <div class="stat-label">Reservas</div>
+        <div class="stat-value">{{ estadisticas.totalReservas }}</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">📈</span>
+        <div class="stat-label">Promedio/día</div>
+        <div class="stat-value">{{ estadisticas.promedioReservasPorDia | number:'1.0-2' }}</div>
+      </div>
+    </div>
+  } @else {
+    <p class="text-muted mt-4">Cargando estadísticas...</p>
+  }
 
-  <nav class="admin-nav mb-4">
-    <a routerLink="restaurants" routerLinkActive="active">Restaurantes</a>
-    <a routerLink="users"       routerLinkActive="active">Usuarios</a>
-    <a routerLink="reservations-admin" routerLinkActive="active">Reservas</a>
-  </nav>
-
-  <router-outlet></router-outlet>
+  @if (visibleSection === 'usuarios') {
+    <div class="mt-4">
+      <h5 class="mb-3">👤 Lista de Usuarios</h5>
+      <ul class="list-group">
+        @for (u of usuarios; track u._id) {
+          <li class="list-group-item">
+            {{ u.username }} — {{ u.email }} ({{ u.role }})
+          </li>
+        }
+      </ul>
+    </div>
+  }
 </div>

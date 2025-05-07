@@ -3,12 +3,12 @@ import { HydratedDocument, Types } from 'mongoose';
 
 export type UsuarioDocument = HydratedDocument<Usuario>;
 
-@Schema()
+@Schema({ timestamps: true } )
 export class Usuario {
     _id?: Types.ObjectId;
 
     @Prop({ required: true, unique: true })
-    username: string;          // ← nuevo
+    username: string;            // nombre de usuario
 
     @Prop({ required: true, unique: true })
     email: string;
@@ -17,10 +17,14 @@ export class Usuario {
     password: string;
 
     @Prop()
-    phone?: string;            // ← nuevo, opcional
+    phone?: string;              // teléfono opcional
 
-    @Prop({ default: 'usuario', enum: ['usuario', 'admin'] })
-    role: string;
+    @Prop({
+        required: true,
+        default: 'cliente',
+        enum: ['cliente', 'propietario', 'admin']
+    })
+    role: 'cliente' | 'propietario' | 'admin';
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);
