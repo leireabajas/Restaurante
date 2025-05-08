@@ -1,20 +1,66 @@
-<h2>Crear Restaurante</h2>
-<form (submit)="onSubmit()">
-  <label>Nombre:</label>
-  <input type="text" [(ngModel)]="restaurant.nombre" name="nombre" required />
+<div class="container mt-5">
+  <div class="card shadow p-4 mx-auto" style="max-width: 600px;">
+    <h2 class="text-center mb-4 text-primary">➕ Nuevo Restaurante</h2>
 
-  <label>Ubicación:</label>
-  <input type="text" [(ngModel)]="restaurant.ubicacion" name="ubicacion" required />
+    <form (submit)="onSubmit()" novalidate>
 
-  <label>Tipo de Comida:</label>
-  <input type="text" [(ngModel)]="restaurant.tipoComida" name="tipoComida" required />
+      <!-- Información básica -->
+      <div class="mb-3">
+        <label class="form-label">🍽️ Nombre</label>
+        <input class="form-control" type="text" [(ngModel)]="restaurant.nombre" name="nombre" required />
+      </div>
 
-  <label>Capacidad:</label>
-  <input type="number" [(ngModel)]="restaurant.capacidad" name="capacidad" required />
+      <div class="mb-3">
+        <label class="form-label">📍 Dirección</label>
+        <input class="form-control" type="text" [(ngModel)]="restaurant.direccion" name="direccion" required />
+      </div>
 
-  <label>Imagen (URL):</label>
-  <input type="text" [(ngModel)]="restaurant.imagen" name="imagen" required />
+      <div class="mb-3">
+        <label class="form-label">🌍 Ubicación</label>
+        <input class="form-control" type="text" [(ngModel)]="restaurant.ubicacion" name="ubicacion" required />
+      </div>
 
+      <div class="mb-3">
+        <label class="form-label">🍜 Tipo de Comida</label>
+        <input class="form-control" type="text" [(ngModel)]="restaurant.tipoComida" name="tipoComida" required />
+      </div>
 
-  <button type="submit">Guardar</button>
-</form>
+      <div class="mb-3">
+        <label class="form-label">👥 Capacidad</label>
+        <input class="form-control" type="number" [(ngModel)]="restaurant.capacidad" name="capacidad" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">⏰ Horario</label>
+        <input class="form-control" type="text" [(ngModel)]="restaurant.horario" name="horario" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">📝 Descripción</label>
+        <textarea class="form-control" rows="3" [(ngModel)]="restaurant.descripcion" name="descripcion"></textarea>
+      </div>
+
+      <!-- Imagen -->
+      <div class="mb-3">
+        <label class="form-label">🖼️ Imagen desde URL</label>
+        <input class="form-control" type="text" [(ngModel)]="restaurant.imagen" name="imagen" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">📁 O subir imagen</label>
+        <input class="form-control" type="file" (change)="onFileSelected($event)" />
+      </div>
+
+      @if (restaurant.imagen) {
+        <div class="text-center mb-3">
+          <img [src]="restaurant.imagen" class="img-fluid rounded shadow" style="max-height: 250px;" alt="Vista previa" />
+        </div>
+      }
+
+      <button type="submit" class="btn btn-primary w-100">
+        ✅ Crear Restaurante
+      </button>
+
+    </form>
+  </div>
+</div>

@@ -32,7 +32,10 @@
       <!-- Solo si es admin -->
       @if (auth.getUserRole() === 'admin') {
         <a routerLink="/admin" class="btn admin-btn">⚙️ Administración</a>
+      } @else if (auth.getUserRole() === 'propietario') {
+        <a routerLink="/admin/restaurants" class="btn admin-btn">🏬 Mis Restaurantes</a>
       }
+
     }
   </div>
 </nav>

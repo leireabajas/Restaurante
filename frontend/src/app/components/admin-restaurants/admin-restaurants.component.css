@@ -1,0 +1,43 @@
+.admin-restaurants h2 {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.btn-danger {
+  background-color: #e63946;
+  border-color: #e63946;
+}
+
+.btn-danger:hover {
+  background-color: #c5303a;
+  border-color: #c5303a;
+}
+
+.restaurant-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.05);
+}
+
+.restaurant-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #343a40;
+}
+
+.card-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}

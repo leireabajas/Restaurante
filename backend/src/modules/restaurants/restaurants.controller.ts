@@ -17,6 +17,7 @@ import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { JwtAuthGuard } from '../auth/auth.guard';
 import { RolesGuard } from '../../common/roles.guard';
 import { Roles } from '../../common/roles.decorator';
+import { Query } from '@nestjs/common';
 
 @Controller('restaurants')
 export class RestaurantsController {
@@ -24,9 +25,12 @@ export class RestaurantsController {
 
     // ✅ Público
     @Get()
-    async findAll() {
+    async findAll(@Request() req, @Query('propietario') propietarioId?: string) {
         try {
-            const restaurantes = await this.restaurantsService.findAll();
+            const restaurantes = propietarioId
+                ? await this.restaurantsService.findByPropietario(propietarioId)
+                : await this.restaurantsService.findAll();
+
             return {
                 status: 'Ok',
                 results: restaurantes.length,
@@ -38,6 +42,19 @@ export class RestaurantsController {
                 message: 'Error interno del servidor'
             });
         }
+    }
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('propietario')
+    @Get('mis')
+    async getMisRestaurantes(@Request() req) {
+        const propietarioId = req.user.userId;
+        console.log('📢 Propietario ID:', propietarioId); // ← esto viene del JWT
+        const restaurantes = await this.restaurantsService.findByPropietario(propietarioId);
+        return {
+            status: 'Ok',
+            results: restaurantes.length,
+            data: restaurantes
+        };
     }
 
     // ✅ Público
@@ -137,5 +154,6 @@ export class RestaurantsController {
             });
         }
     }
+
 
 }

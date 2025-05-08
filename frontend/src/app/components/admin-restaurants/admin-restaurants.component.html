@@ -6,16 +6,94 @@
 
   <div class="row g-4">
     @for (r of restaurants; track r._id) {
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100">
-          <img [src]="r.imagen" class="card-img-top" />
-          <div class="card-body">
-            <h5>{{ r.nombre }}</h5>
-            <p class="text-muted small">📍 {{ r.ubicacion }} • 🍽️ {{ r.tipoComida }}</p>
-          </div>
+      <div class="col-12 col-md-6 col-lg-6">
+        <div class="card h-100 restaurant-card">
+          <img [src]="r.imagen || 'https://via.placeholder.com/300x200?text=Restaurante'" class="card-img-top" />
+
+          <!-- Modo lectura -->
+          @if (editingId !== r._id) {
+            <div class="card-body">
+              <h5 class="card-title">{{ r.nombre }}</h5>
+              <p class="text-muted small mb-1">📍 <strong>Ubicación:</strong> {{ r.ubicacion }}</p>
+              <p class="text-muted small mb-1">🏠 <strong>Dirección:</strong> {{ r.direccion }}</p>
+              <p class="text-muted small mb-1">🍽️ <strong>Tipo:</strong> {{ r.tipoComida }}</p>
+              <p class="text-muted small mb-1">👥 <strong>Capacidad:</strong> {{ r.capacidad }}</p>
+              <p class="text-muted small mb-1">⏰ <strong>Horario:</strong> {{ r.horario }}</p>
+              @if (r.descripcion) {
+                <p class="text-muted small mb-1">📝 <strong>Descripción:</strong> {{ r.descripcion }}</p>
+              }
+            </div>
+          }
+
+          <!-- Modo edición estilizado -->
+          @if (editingId === r._id) {
+            <div class="card-body">
+              <div class="input-group mb-2">
+                <span class="input-group-text">🍽️</span>
+                <input class="form-control" [(ngModel)]="restaurantForm.nombre" placeholder="Nombre" />
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text">🏠</span>
+                <input class="form-control" [(ngModel)]="restaurantForm.direccion" placeholder="Dirección" />
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text">📍</span>
+                <input class="form-control" [(ngModel)]="restaurantForm.ubicacion" placeholder="Ubicación" />
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text">🍔</span>
+                <input class="form-control" [(ngModel)]="restaurantForm.tipoComida" placeholder="Tipo de comida" />
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text">👥</span>
+                <input class="form-control" type="number" [(ngModel)]="restaurantForm.capacidad" placeholder="Capacidad" />
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text">⏰</span>
+                <input class="form-control" [(ngModel)]="restaurantForm.horario" placeholder="Horario" />
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text">📝</span>
+                <textarea class="form-control" [(ngModel)]="restaurantForm.descripcion" placeholder="Descripción"></textarea>
+              </div>
+              <!-- Imagen desde URL -->
+              <div class="input-group mb-2">
+                <span class="input-group-text">🖼️</span>
+                <input
+                  class="form-control"
+                  [(ngModel)]="restaurantForm.imagen"
+                  placeholder="URL de la imagen"
+                />
+              </div>
+              <div class="mb-2">
+                <label class="form-label small">📁 O subir imagen</label>
+                <input type="file" (change)="onImageFileSelected($event)" class="form-control" />
+              </div>
+
+              <!-- Vista previa de la imagen si existe -->
+              @if (restaurantForm.imagen) {
+                <div class="text-center mb-2">
+                  <img
+                    [src]="restaurantForm.imagen"
+                    alt="Vista previa"
+                    class="img-fluid rounded shadow-sm"
+                    style="max-height: 180px"
+                  />
+                </div>
+              }
+
+            </div>
+          }
+
+
           <div class="card-footer d-flex gap-2">
-            <a [routerLink]="['/admin/restaurants/edit', r._id]" class="btn btn-sm btn-outline-primary w-50">✏️</a>
-            <button (click)="delete(r._id)" class="btn btn-sm btn-outline-danger w-50">🗑️</button>
+            @if (editingId !== r._id) {
+              <button (click)="startEdit(r)" class="btn btn-sm btn-outline-primary w-50">✏️ Editar</button>
+            } @else {
+              <button (click)="saveEdit()" class="btn btn-sm btn-success w-50">💾 Guardar</button>
+              <button (click)="editingId = null" class="btn btn-sm btn-secondary w-50">✖️ Cancelar</button>
+            }
+            <button (click)="delete(r._id)" class="btn btn-sm btn-outline-danger w-50">🗑️ Eliminar</button>
           </div>
         </div>
       </div>
