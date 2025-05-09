@@ -1,38 +1,66 @@
-
-
 <div class="container my-4">
-  <!-- 🔍 Buscador ubicado aquí, encima de la lista -->
-  <div class="search-container text-center mb-4">
-    <input
-      type="text"
-      [(ngModel)]="searchQuery"
-      (input)="onSearchChange()"
-      class="form-control w-50 mx-auto"
-      placeholder="🔍 Buscar restaurante..."
-    />
+  <div class="text-center mb-4">
+    <div class="input-group justify-content-center">
+      <span class="input-group-text bg-white border-end-0">
+        <i class="fas fa-search text-muted"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control w-50 border-start-0"
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        placeholder="Buscar por nombre, ubicación o tipo..."
+      />
+      @if (searchQuery || selectedType) {
+        <button class="btn btn-outline-secondary ms-2" (click)="clearFilters()">
+          <i class="fas fa-times me-1"></i> Limpiar
+        </button>
+      }
+    </div>
   </div>
+
+
+  <div class="mb-4 text-center">
+    <div class="btn-group flex-wrap justify-content-center">
+      @for (type of foodTypes; track type) {
+        <button
+          class="btn m-1"
+          [ngClass]="selectedType === type ? 'btn-primary' : 'btn-outline-primary'"
+          (click)="filterByType(type)"
+        >
+          <i class="fas fa-tag me-1"></i> {{ type }}
+        </button>
+      }
+    </div>
+  </div>
+
 
   <div class="row g-4">
     @for (restaurant of filteredRestaurants; track restaurant._id) {
       <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
-        <div class="card restaurant-card w-100 hover-zoom shadow-sm">
+        <div class="card restaurant-card w-100 shadow-sm">
           <img
             [src]="restaurant.imagen || 'https://via.placeholder.com/300x200?text=Restaurante'"
             class="card-img-top restaurant-image"
             alt="Imagen Restaurante"
           />
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title text-primary">{{ restaurant.nombre }}</h5>
-            <p class="card-text text-muted small mb-1">📍 {{ restaurant.ubicacion }}</p>
-            <p class="card-text text-muted small mb-3">🍴 {{ restaurant.tipoComida }}</p>
+            <h5 class="card-title text-primary">
+              <i class="fas fa-store-alt me-1"></i> {{ restaurant.nombre }}
+            </h5>
+            <p class="card-text text-muted small mb-1">
+              <i class="fas fa-map-marker-alt me-1"></i> {{ restaurant.ubicacion }}
+            </p>
+            <p class="card-text text-muted small mb-3">
+              <i class="fas fa-utensils me-1"></i> {{ restaurant.tipoComida }}
+            </p>
             <div class="mt-auto">
               <a
                 [routerLink]="['/restaurants', restaurant._id]"
                 class="btn btn-outline-primary w-100 fw-semibold"
               >
-                Ver Detalles
+                <i class="fas fa-info-circle me-1"></i> Ver Detalles
               </a>
-
             </div>
           </div>
         </div>

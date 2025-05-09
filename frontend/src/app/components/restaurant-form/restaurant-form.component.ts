@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { RestaurantsService } from '../../services/restaurants.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-restaurant-form',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './restaurant-form.component.html',
   styleUrls: ['./restaurant-form.component.css']
 })
@@ -22,6 +22,7 @@ export class RestaurantFormComponent implements OnInit {
     imagen: ''
   };
   id: string | null = null;
+  imageTooLarge = false;
 
   constructor(
     private restaurantsService: RestaurantsService,
@@ -33,43 +34,40 @@ export class RestaurantFormComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) {
       this.restaurantsService.getRestaurantById(this.id).subscribe({
-        next: (data) => this.restaurant = data,
+        next: data => this.restaurant = data,
         error: () => alert('Error al obtener los datos del restaurante')
       });
     }
   }
 
   onSubmit(): void {
-    if (this.id) {
-      this.restaurantsService.updateRestaurant(this.id, this.restaurant).subscribe({
-        next: () => {
-          alert('Restaurante actualizado correctamente');
-          this.router.navigate(['/admin/restaurants']);
-        },
-        error: (err) => alert('Error al actualizar: ' + err.error.message)
-      });
-    } else {
-      this.restaurantsService.createRestaurant(this.restaurant).subscribe({
-        next: () => {
-          alert('Restaurante creado exitosamente');
-          this.router.navigate(['/admin/restaurants']);
-        },
-        error: (err) => alert('Error al crear: ' + err.error.message)
-      });
+    if (this.imageTooLarge) {
+      alert('La imagen es demasiado grande');
+      return;
     }
+
+    const serviceCall = this.id
+      ? this.restaurantsService.updateRestaurant(this.id, this.restaurant)
+      : this.restaurantsService.createRestaurant(this.restaurant);
+
+    serviceCall.subscribe({
+      next: () => {
+        alert(this.id ? 'Restaurante actualizado' : 'Restaurante creado');
+        this.router.navigate(['/admin/restaurants']);
+      },
+      error: err => alert('Error al guardar: ' + err.error?.message)
+    });
   }
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (!file) return;
 
-    const maxSizeMB = 2;
+    const maxSizeMB = 1;
     const maxSizeBytes = maxSizeMB * 1024 * 1024;
 
-    if (file.size > maxSizeBytes) {
-      alert(`La imagen supera los ${maxSizeMB}MB permitidos.`);
-      return;
-    }
+    this.imageTooLarge = file.size > maxSizeBytes;
+    if (this.imageTooLarge) return;
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -77,5 +75,6 @@ export class RestaurantFormComponent implements OnInit {
     };
     reader.readAsDataURL(file);
   }
+
 
 }

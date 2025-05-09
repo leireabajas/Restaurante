@@ -1,0 +1,112 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.list-group {
+  padding: 0;
+  margin: 0;
+}
+
+.list-group-item {
+  background: #fefefe;
+  border: none;
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+  transform: scale(1.01);
+}
+
+.reserva-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.reserva-nombre {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #007bff;
+  margin: 0;
+}
+
+.reserva-detalles {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.badge.estado {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.estado-pendiente {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.estado-confirmada {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.estado-cancelada {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.reserva-actions {
+  justify-content: flex-end;
+}
+
+button.btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+button.btn-success {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+button.btn-success:hover {
+  background-color: #218838;
+}
+
+button.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+button.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.text-muted {
+  color: #6c757d;
+  font-style: italic;
+}

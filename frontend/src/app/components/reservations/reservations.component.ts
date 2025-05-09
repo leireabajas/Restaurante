@@ -1,48 +1,94 @@
 import { Component, OnInit } from '@angular/core';
 import { ReservationsService } from '../../services/reservations.service';
-import { DatePipe, JsonPipe, NgFor } from '@angular/common';
-import {RouterLink} from '@angular/router';
+import {DatePipe, NgClass, TitleCasePipe} from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reservations',
   templateUrl: './reservations.component.html',
+  styleUrls: ['./reservations.component.css'],
   standalone: true,
-  imports: [
-    DatePipe,
-    RouterLink
-  ],
-  styleUrls: ['./reservations.component.css']
+  imports: [DatePipe, NgClass, FormsModule, TitleCasePipe]
 })
 export class ReservationsComponent implements OnInit {
   reservations: any[] = [];
-  userRole: string = 'usuario';
+  editingId: string | null = null;
+  editData: any = {};
+  horaInicio = '';
+  horaFin = '';
+
   constructor(private reservationsService: ReservationsService) {}
 
   ngOnInit(): void {
-    console.log('💥 Componente RESERVATIONS cargado');
+    const mensajeCancelacion = localStorage.getItem('reservaCancelada');
+    if (mensajeCancelacion) {
+      alert('❌ Una de tus reservas ha sido cancelada por el restaurante.');
+      localStorage.removeItem('reservaCancelada');
+    }
+    this.loadReservations();
+  }
 
+
+  loadReservations(): void {
     this.reservationsService.getReservations().subscribe({
-      next: (data) => {
-        const array = Array.isArray(data) ? data : data.data;
-        console.log('📦 Datos recibidos:', array);
-        this.reservations = array;
+      next: data => {
+        console.log('📥 Reservas cargadas para cliente:', data);
+        this.reservations = data;
       },
-      error: (error) => {
-        console.error('❌ Error al obtener reservas:', error);
-        alert('Error al obtener reservas');
-      }
+      error: () => alert('Error al obtener reservas')
+    });
+  }
+
+  startEdit(reservation: any): void {
+    this.editingId = reservation._id;
+    this.editData = {
+      fecha: reservation.fecha,
+      hora: reservation.hora,
+      numeroPersonas: reservation.numeroPersonas
+    };
+    const horario = reservation.restaurante?.horario;
+    if (horario) {
+      const [inicio, fin] = horario.split(' - ');
+      this.horaInicio = inicio;
+      this.horaFin = fin;
+    } else {
+      this.horaInicio = '';
+      this.horaFin = '';
+    }
+  }
+
+  cancelEdit(): void {
+    this.editingId = null;
+    this.editData = {};
+  }
+
+  saveEdit(id: string): void {
+    this.reservationsService.updateReservation(id, this.editData).subscribe({
+      next: () => {
+        alert('Reserva actualizada');
+        this.editingId = null;
+        this.loadReservations();
+      },
+      error: err => alert('Error al actualizar reserva: ' + err.error?.message)
     });
   }
 
   deleteReservation(id: string): void {
-    if (confirm('¿Estás seguro de cancelar esta reserva?')) {
-      this.reservationsService.deleteReservation(id).subscribe({
-        next: () => {
-          alert('Reserva cancelada');
-          this.reservations = this.reservations.filter(res => res._id !== id);
-        },
-        error: () => alert('Error al cancelar la reserva')
-      });
-    }
+    console.log('🧨 Cancelando reserva ID:', id);  // ⬅️ Este log debe aparecer en consola
+
+    if (!confirm('¿Seguro que deseas cancelar esta reserva?')) return;
+
+    this.reservationsService.deleteReservation(id).subscribe({
+      next: () => {
+        console.log('🗑️ Reserva eliminada');
+        this.loadReservations();
+      },
+      error: err => {
+        console.error('❌ Error eliminando reserva', err);
+        alert('Error al eliminar reserva');
+      }
+    });
+
   }
+
 }

@@ -1,54 +1,81 @@
 <div class="container mt-5">
-  <div class="card shadow p-4 mx-auto" style="max-width: 600px;">
+  <div class="card shadow p-4 mx-auto" style="max-width: 550px;">
     <h2 class="text-center mb-4 text-primary">➕ Nuevo Restaurante</h2>
 
-    <form (submit)="onSubmit()" novalidate>
-
-      <!-- Información básica -->
+    <form (ngSubmit)="onSubmit()" #form="ngForm" novalidate>
+      <!-- Nombre -->
       <div class="mb-3">
         <label class="form-label">🍽️ Nombre</label>
-        <input class="form-control" type="text" [(ngModel)]="restaurant.nombre" name="nombre" required />
+        <input class="form-control" type="text" [(ngModel)]="restaurant.nombre" name="nombre" required placeholder="Ej. La Pizzería Napoletana" />
+        @if (form.submitted && !restaurant.nombre) {
+          <div class="text-danger mt-1">El nombre es obligatorio.</div>
+        }
       </div>
 
+      <!-- Dirección -->
       <div class="mb-3">
         <label class="form-label">📍 Dirección</label>
-        <input class="form-control" type="text" [(ngModel)]="restaurant.direccion" name="direccion" required />
+        <input class="form-control" type="text" [(ngModel)]="restaurant.direccion" name="direccion" required placeholder="Ej. Calle Mayor 45, Madrid" />
+        @if (form.submitted && !restaurant.direccion) {
+          <div class="text-danger mt-1">La dirección es obligatoria.</div>
+        }
       </div>
 
+      <!-- Ubicación -->
       <div class="mb-3">
         <label class="form-label">🌍 Ubicación</label>
-        <input class="form-control" type="text" [(ngModel)]="restaurant.ubicacion" name="ubicacion" required />
+        <input class="form-control" type="text" [(ngModel)]="restaurant.ubicacion" name="ubicacion" required placeholder="Ej. Madrid, España" />
+        @if (form.submitted && !restaurant.ubicacion) {
+          <div class="text-danger mt-1">La ubicación es obligatoria.</div>
+        }
       </div>
 
+      <!-- Tipo de comida -->
       <div class="mb-3">
         <label class="form-label">🍜 Tipo de Comida</label>
-        <input class="form-control" type="text" [(ngModel)]="restaurant.tipoComida" name="tipoComida" required />
+        <input class="form-control" type="text" [(ngModel)]="restaurant.tipoComida" name="tipoComida" required placeholder="Ej. Italiana" />
+        @if (form.submitted && !restaurant.tipoComida) {
+          <div class="text-danger mt-1">El tipo de comida es obligatorio.</div>
+        }
       </div>
 
+      <!-- Capacidad -->
       <div class="mb-3">
         <label class="form-label">👥 Capacidad</label>
-        <input class="form-control" type="number" [(ngModel)]="restaurant.capacidad" name="capacidad" required />
+        <input class="form-control" type="number" [(ngModel)]="restaurant.capacidad" name="capacidad" required placeholder="Ej. 50" />
+        @if (form.submitted && !restaurant.capacidad) {
+          <div class="text-danger mt-1">La capacidad es obligatoria.</div>
+        }
       </div>
 
+      <!-- Horario -->
       <div class="mb-3">
         <label class="form-label">⏰ Horario</label>
-        <input class="form-control" type="text" [(ngModel)]="restaurant.horario" name="horario" required />
+        <input class="form-control" type="text" [(ngModel)]="restaurant.horario" name="horario" required placeholder="Ej. 12:00 - 23:00" />
+        @if (form.submitted && !restaurant.horario) {
+          <div class="text-danger mt-1">El horario es obligatorio.</div>
+        }
       </div>
 
+      <!-- Descripción -->
       <div class="mb-3">
         <label class="form-label">📝 Descripción</label>
-        <textarea class="form-control" rows="3" [(ngModel)]="restaurant.descripcion" name="descripcion"></textarea>
+        <textarea class="form-control" rows="3" [(ngModel)]="restaurant.descripcion" name="descripcion" placeholder="Describe brevemente el restaurante..."></textarea>
       </div>
 
-      <!-- Imagen -->
+      <!-- Imagen URL -->
       <div class="mb-3">
         <label class="form-label">🖼️ Imagen desde URL</label>
-        <input class="form-control" type="text" [(ngModel)]="restaurant.imagen" name="imagen" />
+        <input class="form-control" type="text" [(ngModel)]="restaurant.imagen" name="imagen" placeholder="Pega la URL de una imagen" />
       </div>
 
+      <!-- Subir Imagen -->
       <div class="mb-3">
         <label class="form-label">📁 O subir imagen</label>
         <input class="form-control" type="file" (change)="onFileSelected($event)" />
+        @if (imageTooLarge) {
+          <div class="text-danger mt-1">La imagen supera el tamaño máximo permitido (1 MB).</div>
+        }
       </div>
 
       @if (restaurant.imagen) {
@@ -57,9 +84,10 @@
         </div>
       }
 
-      <button type="submit" class="btn btn-primary w-100">
-        ✅ Crear Restaurante
-      </button>
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-outline-primary w-100"> Crear Restaurante</button>
+        <a class="btn btn-outline-danger w-100" routerLink="/admin/restaurants">Cancelar</a>
+      </div>
 
     </form>
   </div>

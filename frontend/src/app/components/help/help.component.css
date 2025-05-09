@@ -4,16 +4,51 @@
   padding: 0 1rem;
 }
 
+.help-page h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #6c757d;
+  font-size: 1rem;
+}
+
 .faq-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .faq-list li {
-  margin-bottom: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  transition: transform 0.2s;
 }
 
-.faq-list strong {
-  display: block;
+.faq-list li:hover {
+  transform: translateY(-2px);
+}
+
+.faq-list h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
   margin-bottom: 0.5rem;
+  color: #343a40;
+  display: flex;
+  align-items: center;
+}
+
+.faq-list p {
+  color: #495057;
+  margin: 0;
+  font-size: 0.95rem;
 }

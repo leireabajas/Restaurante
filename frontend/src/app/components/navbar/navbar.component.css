@@ -1,77 +1,88 @@
-/* src/app/components/navbar/navbar.component.css */
-
-/* 1) Contenedor flex sin wrapping para que todo quede en la misma línea */
 .navbar {
   display: flex;
-  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
   padding: 12px 24px;
-  background: #E63946;            /* ahora rojo tomate */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  background: #E63946;
+  flex-wrap: wrap;
+  position: relative;
 }
 
-/* 2) Logo grande, sin subrayado */
-.logo a {
-  font-size: 40px;
+.logo {
+  font-size: 24px;
   font-weight: bold;
-  color: #FFFFFF;                  /* blanco */
+  color: #fff;
   text-decoration: none;
-  line-height: 1;
-}
-
-/* 3) Links del centro */
-.nav-links {
   display: flex;
-  gap: 24px;
-  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
 }
 
-.nav-links a {
-  color: #FFFFFF;                  /* blanco */
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s, border-bottom 0.2s;
+.burger-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
 }
 
-.nav-links a:hover {
-  color: #FFD7DB;                  /* rosa muy claro al hover */
-  border-bottom: 2px solid #FFD7DB;
-}
-
-/* 4) Bloque de login/logout/admin al final */
+.nav-links,
 .auth-links {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
+  gap: 20px;
 }
 
-/* 5) Botones limpios */
+.nav-links a,
 .auth-links .btn {
-  font-size: 14px;
-  background: transparent;
-  border: 1px solid #FFFFFF;        /* borde blanco */
-  border-radius: 4px;
-  padding: 4px 12px;
+  color: #fff;
   text-decoration: none;
-  color: #FFFFFF;                    /* texto blanco */
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  font-weight: 500;
+}
+
+.auth-links .btn {
+  border: 1px solid #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: transparent;
+  transition: background 0.2s;
 }
 
 .auth-links .btn:hover {
-  background: #FFFFFF;               /* fondo blanco */
-  color: #E63946;                    /* texto rojo */
+  background: #fff;
+  color: #E63946;
 }
 
-/* 6) Texto de bienvenida */
-.auth-links span {
-  font-size: 15px;
-  color: #FFFFFF;                    /* blanco */
+.welcome {
+  color: #fff;
+  margin-right: 8px;
 }
 
-/* 7) Botón Admin un poco distinto */
-.admin-btn {
-  font-weight: bold;
+@media (max-width: 768px) {
+  .burger-btn {
+    display: block;
+  }
+
+  .nav-links,
+  .auth-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 0;
+    display: none;
+  }
+
+  .nav-links.open,
+  .auth-links.open {
+    display: flex;
+  }
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
 }

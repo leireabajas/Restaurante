@@ -21,6 +21,10 @@ import { AdminUserFormComponent } from './components/admin-user-form/admin-user-
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import {ProfileComponent} from './components/profile/profile.component';
+import {ReservationsAdminComponent} from './components/reservations-admin/reservations-admin.component';
+import {AboutComponent} from './components/about/about.component';
+import {ContactComponent} from './components/contact/contact.component';
+import {HelpComponent} from './components/help/help.component';
 
 
 export const routes: Routes = [
@@ -34,6 +38,10 @@ export const routes: Routes = [
   // 📋 Catálogo de restaurantes
   { path: 'restaurants',     component: RestaurantsComponent },
   { path: 'restaurants/:id', component: RestaurantDetailComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'help', component: HelpComponent },
+
 
   // 🔒 Reservas (solo usuarios logueados)
   {
@@ -75,11 +83,12 @@ export const routes: Routes = [
     data: { roles: ['propietario'] }
   },
   {
-    path: 'admin/restaurants/edit/:id',
-    component: RestaurantFormComponent,
+    path: 'admin/reservations',
+    component: ReservationsAdminComponent,
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: ['propietario'] }
   },
+
 
   // ⚙️ Dashboard general de administración (solo admins)
   {

@@ -29,6 +29,13 @@ export class Restaurante {
     @Prop()
     descripcion?: string;
 
+    @Prop()
+    lat: number;
+
+    @Prop()
+    lng: number;
+
+
     @Prop({ type: Types.ObjectId, ref: 'Usuario', required: true })
     propietario: Types.ObjectId;
 }

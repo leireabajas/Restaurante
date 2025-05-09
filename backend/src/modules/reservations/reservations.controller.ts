@@ -14,13 +14,12 @@ import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { JwtAuthGuard } from '../auth/auth.guard';
-import {Roles} from "../../common/roles.decorator";
-import {RolesGuard} from "../../common/roles.guard";
+import { Roles } from '../../common/roles.decorator';
+import { RolesGuard } from '../../common/roles.guard';
 
 @Controller('reservations')
 export class ReservationsController {
     constructor(private readonly reservationsService: ReservationsService) {}
-
 
     @UseGuards(JwtAuthGuard)
     @Get()
@@ -29,8 +28,15 @@ export class ReservationsController {
         return await this.reservationsService.findByUser(userId);
     }
 
+    // 🔐 Reservas para propietarios → MOVER AQUÍ
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('propietario')
+    @Get('mis')
+    async getByOwner(@Request() req) {
+        const propietarioId = req.user.userId;
+        return await this.reservationsService.obtenerPorPropietario(propietarioId);
+    }
 
-    // ✅ Pública: obtener por ID (opcional)
     @Get(':id')
     async getReservationById(@Param('id') id: string) {
         const reservation = await this.reservationsService.findOne(id);
@@ -38,42 +44,26 @@ export class ReservationsController {
         return reservation;
     }
 
-    // 🔐 Crear reserva → solo logueados
     @UseGuards(JwtAuthGuard)
     @Post()
-    async createReservation(
-        @Body() createReservationDto: CreateReservationDto,
-        @Request() req
-    ) {
+    async createReservation(@Body() dto: CreateReservationDto, @Request() req) {
         const userId = req.user.userId;
-        return await this.reservationsService.create(createReservationDto, userId);
+        return await this.reservationsService.create(dto, userId);
     }
 
-    // 🔐 Editar reserva → solo logueados
     @UseGuards(JwtAuthGuard)
     @Put(':id')
-    async updateReservation(
-        @Param('id') id: string,
-        @Body() updateReservationDto: UpdateReservationDto,
-        @Request() req
-    ) {
+    async updateReservation(@Param('id') id: string, @Body() dto: UpdateReservationDto, @Request() req) {
         const userId = req.user.userId;
-        return await this.reservationsService.update(id, updateReservationDto, userId);
+        return await this.reservationsService.update(id, dto, userId);
     }
 
-    // 🔐 Eliminar reserva → solo logueados
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async deleteReservation(@Param('id') id: string, @Request() req) {
+        console.log('🔒 DELETE desde usuario:', req.user);
         const userId = req.user.userId;
         return await this.reservationsService.delete(id, userId);
     }
 
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('propietario')
-    @Get('mis')
-    async obtenerMisReservas(@Request() req) {
-        const propietarioId = req.user.userId; // viene del token
-        return await this.reservationsService.obtenerPorPropietario(propietarioId);
-    }
 }

@@ -1,10 +1,10 @@
-<div class="register-container mx-auto mt-5 p-4 bg-white rounded-2 shadow-sm" style="max-width:400px;">
+<div class="register-container mx-auto mt-5 p-4 bg-white rounded-3 shadow-sm" style="max-width: 420px;">
   @if (!auth.getToken()) {
-    <h2 class="text-center mb-4">📝 Registro</h2>
+    <h2 class="text-center mb-4"><i class="fas fa-user-plus me-2"></i>Registro</h2>
+
     <form #f="ngForm" (ngSubmit)="onRegister()" novalidate>
-      <!-- Usuario -->
       <div class="mb-3">
-        <label class="form-label">Usuario</label>
+        <label class="form-label"><i class="fas fa-user me-1"></i>Usuario</label>
         <input
           type="text"
           class="form-control"
@@ -19,9 +19,8 @@
         }
       </div>
 
-      <!-- Email -->
       <div class="mb-3">
-        <label class="form-label">Correo electrónico</label>
+        <label class="form-label"><i class="fas fa-envelope me-1"></i>Correo electrónico</label>
         <input
           type="email"
           class="form-control"
@@ -36,9 +35,8 @@
         }
       </div>
 
-      <!-- Contraseña -->
       <div class="mb-3">
-        <label class="form-label">Contraseña</label>
+        <label class="form-label"><i class="fas fa-lock me-1"></i>Contraseña</label>
         <input
           type="password"
           class="form-control"
@@ -54,11 +52,8 @@
         }
       </div>
 
-      <!-- Teléfono (opcional) -->
       <div class="mb-3">
-        <label class="form-label">
-          Teléfono <small>(no obligatorio)</small>
-        </label>
+        <label class="form-label"><i class="fas fa-phone me-1"></i>Teléfono <small>(opcional)</small></label>
         <input
           type="text"
           class="form-control"
@@ -68,11 +63,8 @@
         />
       </div>
 
-      <!-- Código de invitación -->
       <div class="mb-4">
-        <label class="form-label">
-          Código de invitación <small>(solo propietarios)</small>
-        </label>
+        <label class="form-label"><i class="fas fa-key me-1"></i>Código de invitación <small>(solo propietarios)</small></label>
         <input
           type="text"
           class="form-control"
@@ -80,26 +72,22 @@
           [(ngModel)]="inviteCode"
           name="inviteCode"
         />
-
       </div>
 
-
-      <!-- Botón de registro -->
       <div class="text-center">
         <button class="btn btn-primary w-100" [disabled]="f.invalid">
-          Registrarse
+          <i class="fas fa-user-check me-1"></i>Registrarse
         </button>
       </div>
     </form>
 
     <p class="text-center text-muted mt-3 mb-0">
       ¿Ya tienes cuenta?
-      <a routerLink="/login" class="link-primary">Inicia sesión</a>
+      <a routerLink="/login" class="link-primary fw-semibold">Inicia sesión</a>
     </p>
   } @else {
     <div class="alert alert-info text-center">
-      Ya estás registrado y logueado.
+      <i class="fas fa-info-circle me-1"></i>Ya estás registrado y logueado.
     </div>
   }
 </div>
-

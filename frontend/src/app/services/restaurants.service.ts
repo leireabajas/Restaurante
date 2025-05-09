@@ -27,8 +27,9 @@ export class RestaurantsService {
   }
 
   deleteRestaurant(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/restaurants/${id}`);
+    return this.http.delete(`${this.apiUrl}/restaurants/${id}`)
   }
+
 
 
   getMyRestaurants(): Observable<{ status: string; data: any[] }> {

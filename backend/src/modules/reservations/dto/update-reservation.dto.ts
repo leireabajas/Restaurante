@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsDateString, IsInt, Min } from 'class-validator';
+import {IsString, IsOptional, IsDateString, IsInt, Min, IsIn} from 'class-validator';
 
 export class UpdateReservationDto {
     @IsString()
@@ -17,4 +17,9 @@ export class UpdateReservationDto {
     @Min(1)
     @IsOptional()
     numeroPersonas?: number;
+
+    @IsOptional()
+    @IsString()
+    @IsIn(['pendiente', 'confirmada', 'cancelada'])
+    estado?: 'pendiente' | 'confirmada' | 'cancelada';
 }

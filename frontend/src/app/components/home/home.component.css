@@ -1,173 +1,170 @@
-/* src/app/components/home/home.component.css */
-
-/* Contenedor del héroe */
+/* Hero Section */
 .home-hero {
   position: relative;
-  height: 360px;              /* 60vh ~ 360px aprox */
+  height: 360px;
   overflow: hidden;
-  background: #F8F9FA;
+  background: #f8f9fa;
+  margin-top: -16px; /* para pegarlo al navbar */
 }
 
-/* Imagen de fondo como <img> */
 .hero-bg-img {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   z-index: 0;
 }
 
-/* Overlay para oscurecer */
 .overlay {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.5);
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
   z-index: 1;
 }
 
-/* Contenido del héroe */
 .hero-content {
   position: relative;
   z-index: 2;
   top: 50%;
   transform: translateY(-50%);
-  color: #FFFFFF;
-  padding: 0 16px;
+  color: #ffffff;
+  padding: 0 1rem;
 }
 
 .hero-content h1 {
-  font-size: 48px;
-  margin-bottom: 8px;
-  color: #FFFFFF;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.hero-content .text-brand {
+  color: #ff4757;
 }
 
 .subtitle {
-  font-size: 20px;
-  margin-bottom: 24px;
-  color: #FFFFFF;
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
 }
 
-/* Buscador */
-.search-wrapper {
-  display: inline-flex;
-  gap: 8px;
+/* Featured Restaurants */
+.featured-section h2 {
+  font-weight: 600;
+  font-size: 1.6rem;
 }
 
-.search-wrapper input {
-  padding: 12px 16px;
-  width: 300px;
-  max-width: 100%;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  background: #FFFFFF;
-  color: #343A40;
+.restaurant-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.search-wrapper button {
-  padding: 12px 20px;
-  border: none;
-  background: #E63946;
-  color: #FFFFFF;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.2s ease;
+.restaurant-card:hover {
+  transform: translateY(-5px);
 }
 
-.search-wrapper button:hover {
-  background: #D4303F;
+.restaurant-image {
+  height: 200px;
+  object-fit: cover;
 }
 
-/* 🍽️ Categorías */
-.categories-section h2 {
-  font-size: 24px;
-  color: #343A40;
-  margin-bottom: 16px;
-}
-.categories-section .badge {
-  font-size: 14px;
-  padding: 8px 12px;
-  cursor: pointer;
-  background: #F4A261;
-  color: #FFFFFF;
-}
-.categories-section .badge:hover {
-  background-color: #DB8C4E;
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
-/* ✨ Animación fade-in */
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.btn-outline-primary {
+  transition: all 0.2s ease-in-out;
+  border-radius: 8px;
+}
+
+.btn-outline-primary:hover {
+  transform: scale(1.05);
+}
+
+.btn-danger {
+  font-weight: 500;
+  padding: 10px 30px;
+  border-radius: 8px;
+}
+
+/* Fade animation */
 .fade-in {
-  animation: fadeIn 0.5s ease both;
+  animation: fadeIn 0.5s ease-in-out both;
 }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.restaurant-card {
-  display: flex;
-  flex-direction: column;
-  width: 100%;         /* para que respete el max-width */
-  max-width: 260px;     /* <--- ancho fijo igual que “Burger Planet” */
+/* Benefits Section */
+.benefits-section {
+  padding: 3rem 1rem;
+  background-color: #f1f3f5;
+  text-align: center;
+  border-radius: 16px;
+}
+
+.benefits-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #343a40;
+}
+
+.benefit-item {
+  background: #fff;
   border-radius: 12px;
-  overflow: hidden;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  padding: 1.5rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
 }
 
-/* Hover animado */
-.restaurant-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+.benefit-item:hover {
+  transform: translateY(-6px);
 }
 
-/* Imagen portada */
-.restaurant-image {
-  height: 200px;       /* altura uniforme */
-  width: 100%;
-  object-fit: cover;   /* recorta/centra la imagen */
-  flex-shrink: 0;
+.benefit-item i {
+  font-size: 2rem;
+  color: #e63946;
+  margin-bottom: 0.5rem;
 }
 
-/* Cuerpo */
-.card-body {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.benefit-item h5 {
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.benefit-item p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.map-wrapper {
+  max-width: 1000px;
+  margin: auto;
   padding: 1rem;
 }
 
-/* Título */
-.card-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #000000;      /* o el color principal que uses */
-}
-
-/* Texto secundario */
-.card-text {
-  font-size: 0.95rem;
-  color: #6c757d;
-  margin-bottom: 1rem;
-}
-
-/* Botón “Ver detalles” */
-.btn-outline-primary {
-  border-radius: 6px;
-  transition: transform 0.2s;
-}
-
-.btn-outline-primary:hover {
-  transform: scale(1.05);
+#map {
+  width: 100%;
+  height: 400px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }

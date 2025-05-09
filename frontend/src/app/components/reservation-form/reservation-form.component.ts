@@ -16,22 +16,24 @@ export class ReservationFormComponent implements OnInit {
     restaurante: '',
     fecha: '',
     hora: '',
-    numeroPersonas: 1
+    numeroPersonas: 1,
+    nombreCliente: ''
   };
+
   restaurants: any[] = [];
   id: string | null = null;
   horaInicio: string = '';
   horaFin: string = '';
 
   constructor(
-      private reservationsService: ReservationsService,
-      private restaurantsService: RestaurantsService,
-      private route: ActivatedRoute,
-      private router: Router
+    private reservationsService: ReservationsService,
+    private restaurantsService: RestaurantsService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    // Obtener el parámetro 'restaurante' si existe
+    // Obtener restaurante desde query param si existe
     this.route.queryParams.subscribe(params => {
       if (params['restaurante']) {
         this.reservation.restaurante = params['restaurante'];
@@ -39,7 +41,7 @@ export class ReservationFormComponent implements OnInit {
       }
     });
 
-    // Si se está editando una reserva existente
+    // Cargar datos si se edita una reserva
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) {
       this.reservationsService.getReservationById(this.id).subscribe({
@@ -48,7 +50,8 @@ export class ReservationFormComponent implements OnInit {
             restaurante: data.restaurante._id || data.restaurante,
             fecha: data.fecha,
             hora: data.hora,
-            numeroPersonas: data.numeroPersonas
+            numeroPersonas: data.numeroPersonas,
+            nombreCliente: data.nombreCliente || ''
           };
           this.cargarHorarioRestaurante(this.reservation.restaurante);
         },
@@ -56,7 +59,7 @@ export class ReservationFormComponent implements OnInit {
       });
     }
 
-    // Cargar la lista de restaurantes
+    // Cargar todos los restaurantes
     this.restaurantsService.getRestaurants().subscribe({
       next: data => this.restaurants = data.data,
       error: () => alert('Error al obtener restaurantes')
@@ -66,6 +69,13 @@ export class ReservationFormComponent implements OnInit {
   cargarHorarioRestaurante(restauranteId: string): void {
     this.restaurantsService.getRestaurantById(restauranteId).subscribe({
       next: restaurante => {
+        if (!restaurante?.horario) {
+          console.warn('⚠️ Restaurante sin horario definido:', restaurante);
+          this.horaInicio = '';
+          this.horaFin = '';
+          return;
+        }
+
         const [inicio, fin] = restaurante.horario.split(' - ');
         this.horaInicio = inicio;
         this.horaFin = fin;
@@ -77,22 +87,22 @@ export class ReservationFormComponent implements OnInit {
   onSubmit(): void {
     if (this.id) {
       this.reservationsService.updateReservation(this.id, this.reservation)
-          .subscribe({
-            next: () => {
-              alert('Reserva actualizada correctamente');
-              this.router.navigate(['/reservations']);
-            },
-            error: err => alert('Error al actualizar: ' + err.error.message)
-          });
+        .subscribe({
+          next: () => {
+            alert('Reserva actualizada correctamente');
+            this.router.navigate(['/reservations']);
+          },
+          error: err => alert('Error al actualizar: ' + err.error.message)
+        });
     } else {
       this.reservationsService.createReservation(this.reservation)
-          .subscribe({
-            next: () => {
-              alert('Reserva creada exitosamente');
-              this.router.navigate(['/reservations']);
-            },
-            error: err => alert('Error al crear: ' + err.error.message)
-          });
+        .subscribe({
+          next: () => {
+            alert('Reserva creada exitosamente');
+            this.router.navigate(['/reservations']);
+          },
+          error: err => alert('Error al crear: ' + err.error.message)
+        });
     }
   }
 }

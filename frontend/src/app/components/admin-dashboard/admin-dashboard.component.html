@@ -1,40 +1,40 @@
 <div class="admin-dashboard container mt-4">
-  <h2 class="dashboard-title">📊 Panel de Estadísticas</h2>
+  <h2 class="dashboard-title"><i class="fas fa-chart-line me-2"></i>Panel de Estadísticas</h2>
 
   @if (estadisticas) {
     <div class="stats-grid mb-4">
       <div class="stat-card" (click)="toggleSection('usuarios')">
-        <span class="stat-icon">👤</span>
+        <i class="fas fa-users stat-icon"></i>
         <div class="stat-label">Usuarios</div>
         <div class="stat-value">{{ estadisticas.totalUsuarios }}</div>
       </div>
       <div class="stat-card">
-        <span class="stat-icon">🏬</span>
+        <i class="fas fa-store stat-icon"></i>
         <div class="stat-label">Restaurantes</div>
         <div class="stat-value">{{ estadisticas.totalRestaurantes }}</div>
       </div>
       <div class="stat-card">
-        <span class="stat-icon">📅</span>
+        <i class="fas fa-calendar-check stat-icon"></i>
         <div class="stat-label">Reservas</div>
         <div class="stat-value">{{ estadisticas.totalReservas }}</div>
       </div>
       <div class="stat-card">
-        <span class="stat-icon">📈</span>
+        <i class="fas fa-chart-bar stat-icon"></i>
         <div class="stat-label">Promedio/día</div>
         <div class="stat-value">{{ estadisticas.promedioReservasPorDia | number:'1.0-2' }}</div>
       </div>
     </div>
   } @else {
-    <p class="text-muted mt-4">Cargando estadísticas...</p>
+    <p class="text-muted mt-4 text-center">Cargando estadísticas...</p>
   }
 
   @if (visibleSection === 'usuarios') {
     <div class="mt-4">
-      <h5 class="mb-3">👤 Lista de Usuarios</h5>
+      <h5 class="mb-3"><i class="fas fa-user me-2"></i>Lista de Usuarios</h5>
       <ul class="list-group">
         @for (u of usuarios; track u._id) {
           <li class="list-group-item">
-            {{ u.username }} — {{ u.email }} ({{ u.role }})
+            <i class="fas fa-user-circle me-2 text-primary"></i>{{ u.username }} — {{ u.email }} <span class="badge bg-secondary text-light">{{ u.role }}</span>
           </li>
         }
       </ul>

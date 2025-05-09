@@ -1,55 +1,66 @@
-/* 🎨 Estilo de las tarjetas de restaurante */
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.input-group-text {
+  background: white;
+  border-right: none;
+}
+
+.input-group .form-control {
+  border-left: none;
+  border-radius: 0 0.375rem 0.375rem 0;
+}
+
+.btn-outline-secondary i {
+  vertical-align: middle;
+}
+
 .restaurant-card {
-  width: 100%;
-  max-width: 260px; /* Para que sean cuadraditas */
-  height: 400px; /* Altura fija */
-  border-radius: 12px;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
   background: #ffffff;
-  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-  border: 2px solid transparent;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px solid #dee2e6;
 }
 
-/* 🎯 Hover bonito para dar sensación de dinamismo */
 .restaurant-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* 📸 Imagen de la tarjeta */
 .restaurant-image {
   height: 160px;
   width: 100%;
   object-fit: cover;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
 }
 
-/* 📦 Contenido del cuerpo de la tarjeta */
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.card-title i {
+  margin-right: 6px;
+}
+
+.card-text i {
+  margin-right: 6px;
+}
+
 .card-body {
-  padding: 1rem;
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 1rem;
 }
 
-/* 📝 Título del restaurante */
-.card-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-/* 📍 Texto de ubicación y tipo de comida */
-.card-text {
-  font-size: 0.95rem;
-  color: #6c757d;
-}
-
-/* 🔥 Botón Detalles */
 .btn-outline-primary {
   transition: transform 0.2s ease;
 }
@@ -58,11 +69,9 @@
   transform: scale(1.05);
 }
 
-/* 🔎 Estilo del input de búsqueda */
-.search-container input {
-  max-width: 400px;
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.btn-group .btn {
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
 }

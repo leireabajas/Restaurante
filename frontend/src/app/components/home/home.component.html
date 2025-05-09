@@ -1,70 +1,61 @@
-<!-- src/app/components/home/home.component.html -->
 <section class="home-hero">
-  <!-- Imagen de fondo -->
-  <img
-    src="/assets/images/restaurante.jpg"
-    alt="Fondo Restaurante"
-    class="hero-bg-img"
-  />
-
-  <!-- Capa semitransparente -->
+  <img src="/assets/images/restaurante.jpg" alt="Fondo Restaurante" class="hero-bg-img" />
   <div class="overlay"></div>
 
-  <!-- Contenido encima -->
   <div class="hero-content text-center">
-    <h1>🍴 Bienvenido a RestauranteApp</h1>
-    <p class="subtitle">Encuentra tu próximo rincón favorito</p>
-
-    <div class="search-wrapper">
-      <input
-        type="text"
-        [(ngModel)]="searchQuery"
-        placeholder="Busca por nombre, tipo o ciudad..."
-        (keydown.enter)="onSearch()"
-      />
-      <button (click)="onSearch()">🔍 Buscar</button>
-    </div>
+    <h1><i class="fas fa-utensils me-2"></i>Bienvenido a <span class="text-brand">ReserGo</span></h1>
+    <p class="subtitle"><i class="fas fa-map-marker-alt me-2"></i>Encuentra tu próximo rincón favorito</p>
   </div>
 </section>
 
-
 <div class="container my-5">
-  <!-- Categorías por tipo de comida -->
-  <div class="categories-section mb-5">
-    <h2>Categorías</h2>
-    <div class="d-flex flex-wrap gap-2">
-      @for (c of foodTypes; track c) {
-        <button (click)="filterByType(c)" class="badge bg-secondary">
-          {{ c }}
-        </button>
-      }
+  <!-- Ventajas de usar ReserGo -->
+  <section class="features-section text-center mb-5">
+    <h2 class="mb-4"><i class="fas fa-check-circle me-2"></i>¿Por qué elegir ReserGo?</h2>
+    <div class="row g-4">
+      <div class="col-6 col-md-3">
+        <i class="fas fa-clock fa-2x text-primary mb-2"></i>
+        <h6>Reserva en segundos</h6>
+        <p class="small">Elige restaurante y horario, sin complicaciones.</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <i class="fas fa-mobile-alt fa-2x text-primary mb-2"></i>
+        <h6>100% Móvil</h6>
+        <p class="small">Diseñado para funcionar perfecto en tu teléfono.</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <i class="fas fa-star fa-2x text-primary mb-2"></i>
+        <h6>Valoraciones reales</h6>
+        <p class="small">Consulta opiniones y puntuaciones de otros usuarios.</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <i class="fas fa-thumbs-up fa-2x text-primary mb-2"></i>
+        <h6>Confirmación rápida</h6>
+        <p class="small">Recibe tu confirmación por email al instante.</p>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- Restaurantes Destacados -->
-  <section class="featured-section mb-5">
-    <h2 class="mb-4">✨ Restaurantes Destacados</h2>
+  <section class="featured-section">
+    <h2 class="mb-4"><i class="fas fa-star me-2"></i>Restaurantes Destacados</h2>
     <div class="row g-4">
       @for (restaurant of featured; track restaurant._id) {
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
-          <div class="card restaurant-card fade-in">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+          <div class="card restaurant-card w-100 fade-in">
             <img
               [src]="restaurant.imagen || 'https://via.placeholder.com/300x200?text=Restaurante'"
               class="card-img-top restaurant-image"
               alt="Imagen Restaurante"
             />
             <div class="card-body d-flex flex-column">
-              <h5 class="card-title">{{ restaurant.nombre }}</h5>
-              <p class="card-text text-muted small mb-1">📍 {{ restaurant.ubicacion }}</p>
-              <p class="card-text text-muted small mb-3">🍴 {{ restaurant.tipoComida }}</p>
+              <h5 class="card-title"><i class="fas fa-store me-2"></i>{{ restaurant.nombre }}</h5>
+              <p class="card-text text-muted small mb-1"><i class="fas fa-map-marker-alt me-1"></i>{{ restaurant.ubicacion }}</p>
+              <p class="card-text text-muted small mb-3"><i class="fas fa-utensils me-1"></i>{{ restaurant.tipoComida }}</p>
               <div class="mt-auto">
-                <a
-                  [routerLink]="['/restaurants', restaurant._id]"
-                  class="btn btn-outline-primary w-100"
-                >
-                  Ver detalles
+                <a [routerLink]="['/restaurants', restaurant._id]" class="btn btn-outline-primary w-100">
+                  <i class="fas fa-eye me-2"></i>Ver detalles
                 </a>
-
               </div>
             </div>
           </div>
@@ -73,8 +64,19 @@
     </div>
     <div class="text-center mt-4">
       <a [routerLink]="['/restaurants']" class="btn btn-lg btn-danger">
-        Ver todos los restaurantes
+        <i class="fas fa-list me-2"></i>Ver todos los restaurantes
       </a>
     </div>
   </section>
+  <section class="map-preview-section container text-center my-5">
+
+
+    <div class="map-wrapper my-5">
+      <h2><i class="fas fa-map-marked-alt me-2"></i> Restaurantes Cercanos</h2>
+      <div id="map"></div>
+    </div>
+
+
+  </section>
+
 </div>

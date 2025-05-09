@@ -1,44 +1,78 @@
+/* Container principal */
 .container {
+  margin-top: 2rem;
+  max-width: 600px;
+}
+
+/* Tarjeta del formulario */
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   padding: 2rem;
 }
 
-.card {
-  border-radius: 12px;
-  border: none;
-  background-color: #fff;
+/* Título */
+h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
 }
 
-h2.text-primary {
-  font-weight: 600;
-  color: #0d6efd;
-}
-
+/* Etiquetas */
 .form-label {
   font-weight: 500;
-  color: #495057;
+  color: #34495e;
 }
 
+/* Inputs */
 .form-control {
   border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.95rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s ease-in-out;
 }
 
-textarea.form-control {
-  resize: vertical;
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+}
+
+/* Botones */
+.btn {
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
 }
 
 .btn-primary {
   background-color: #0d6efd;
   border-color: #0d6efd;
-  font-weight: 500;
 }
 
 .btn-primary:hover {
   background-color: #0b5ed7;
-  border-color: #0a58ca;
+  border-color: #0b5ed7;
 }
 
-input[type="file"] {
-  cursor: pointer;
+.btn-outline-danger {
+  border-radius: 8px;
+}
+
+/* Imagen de vista previa */
+img.img-fluid {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 250px;
+  object-fit: cover;
+}
+
+/* Mensaje de validación */
+.text-danger {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+.btn {
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
 }

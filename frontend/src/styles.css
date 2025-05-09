@@ -1,1 +1,19 @@
+/* Asegura que html y body ocupen toda la altura */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* El root debe estirarse a todo el alto */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Importante: usa 100vh */
+}
+
+/* El contenedor principal del contenido debe expandirse */
+main.app-content {
+  flex: 1;
+}
 /* You can add global styles to this file, and also import other style files */

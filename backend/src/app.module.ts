@@ -18,7 +18,8 @@ import {AdminModule} from "./modules/admin/admin.module";
         ReservationsModule,
         UsersModule,
         AuthModule,
-        AdminModule
+        AdminModule,
+
 
     ],
     controllers: [AppController],

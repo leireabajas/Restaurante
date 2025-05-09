@@ -1,14 +1,45 @@
 .page {
   max-width: 800px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  line-height: 1.6;
+  margin: 10rem auto; /* Margen igual arriba y abajo */
+  padding: 0 1.5rem;
+  text-align: center;
+  line-height: 1.8;
+  background: #fdfdfd;
+
+
 }
 
+
+
+
 .about-page h1 {
+  font-size: 2.5rem;
+  color: #34495e;
   margin-bottom: 1rem;
 }
 
-.about-page p + p {
-  margin-top: 0.75rem;
+.about-page p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
+.about-page i {
+  color: #000000;
+  margin: 0 6px;
+}
+
+.about-highlight {
+  background: #f8f9fa;
+  border-left: 5px solid #0d6efd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.about-highlight h4 {
+  color: #0d6efd;
+}
+
+.about-highlight p {
+  font-size: 1rem;
+  color: #495057;
 }

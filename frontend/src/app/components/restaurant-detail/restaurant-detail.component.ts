@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router, RouterLink, RouterModule} from '@angular/router';
-import { RestaurantsService }     from '../../services/restaurants.service';
-import { AuthService }            from '../../services/auth.service';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import { RestaurantsService } from '../../services/restaurants.service';
+import { AuthService } from '../../services/auth.service';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-restaurant-detail',
-  standalone: true,
   templateUrl: './restaurant-detail.component.html',
+  styleUrls: ['./restaurant-detail.component.css'],
   imports: [
-    RouterLink,RouterModule
+    NgClass,
+    RouterLink
   ],
-  styleUrls: ['./restaurant-detail.component.css']
+  standalone: true
 })
 export class RestaurantDetailComponent implements OnInit {
   restaurant: any = null;
@@ -37,16 +39,13 @@ export class RestaurantDetailComponent implements OnInit {
 
   onReserve(): void {
     if (this.isLoggedIn) {
-      // Usuario logueado → formulario de reserva con query param
       this.router.navigate(['/reservations/new'], {
         queryParams: { restaurante: this.restaurant._id }
       });
     } else {
-      // No logueado → lo llevamos al login antes de reservar
       this.router.navigate(['/login'], {
         queryParams: { redirect: `/restaurant-detail/${this.restaurant._id}` }
       });
     }
   }
 }
-

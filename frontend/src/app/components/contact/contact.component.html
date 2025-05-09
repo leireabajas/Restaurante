@@ -1,16 +1,25 @@
 <div class="page contact-page">
-  <h1>Contacto</h1>
-  <p>¿Tienes dudas o sugerencias? Escríbenos:</p>
+  <h1><i class="fas fa-envelope-open-text"></i> Contáctanos</h1>
+  <p>¿Tienes dudas o sugerencias? Estamos aquí para ayudarte.</p>
+
   <form class="contact-form">
-    <label>Nombre</label>
-    <input type="text" placeholder="Tu nombre" />
+    <div class="form-group">
+      <label for="nombre"><i class="fas fa-user"></i> Nombre</label>
+      <input id="nombre" type="text" placeholder="Tu nombre completo" required />
+    </div>
 
-    <label>Email</label>
-    <input type="email" placeholder="tu@ejemplo.com" />
+    <div class="form-group">
+      <label for="email"><i class="fas fa-envelope"></i> Email</label>
+      <input id="email" type="email" placeholder="tu@ejemplo.com" required />
+    </div>
 
-    <label>Mensaje</label>
-    <textarea rows="5" placeholder="¿En qué podemos ayudarte?"></textarea>
+    <div class="form-group">
+      <label for="mensaje"><i class="fas fa-comment-dots"></i> Mensaje</label>
+      <textarea id="mensaje" rows="5" placeholder="¿En qué podemos ayudarte?" required></textarea>
+    </div>
 
-    <button type="submit">Enviar</button>
+    <button type="submit">
+      <i class="fas fa-paper-plane"></i> Enviar mensaje
+    </button>
   </form>
 </div>

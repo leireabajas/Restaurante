@@ -1,27 +1,32 @@
-// src/app/components/navbar/navbar.component.ts
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
   templateUrl: './navbar.component.html',
   imports: [
-    RouterLink
+    RouterLink,
+    NgClass
   ],
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
-  constructor(public auth: AuthService) {}
+export class NavbarComponent implements OnInit {
+  username: string | null = null;
+  menuAbierto: boolean = false;
 
+  constructor(public auth: AuthService, private router: Router) {}
 
-  get username(): string | null {
-    return this.auth.getUserName();
+  ngOnInit(): void {
+    const user = this.auth.getUser();
+    this.username = user?.nombre || user?.email || null;
   }
 
-  onLogout() {
+  onLogout(): void {
     this.auth.logout();
-    window.location.href = '/';
+    this.username = null;
+    this.menuAbierto = false;
+    this.router.navigate(['/']);
   }
 }

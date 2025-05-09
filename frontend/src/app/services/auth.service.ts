@@ -17,6 +17,7 @@ interface JwtPayload {
 })
 export class AuthService {
   private apiUrl = environment.apiUrl;
+  private userKey = 'user';
 
   constructor(private http: HttpClient) {}
 
@@ -64,17 +65,6 @@ export class AuthService {
     }
   }
 
-  getUserName(): string | null {
-    const token = this.getToken();
-    if (!token) return null;
-
-    try {
-      const payload = jwtDecode<JwtPayload>(token);
-      return payload.username;
-    } catch {
-      return null;
-    }
-  }
 
   getUserId(): string {
     const token = this.getToken();
@@ -83,10 +73,16 @@ export class AuthService {
     return payload.sub;
   }
 
-  getTokenPayload(): any {
+  getUser() {
     const token = this.getToken();
     if (!token) return null;
-    return JSON.parse(atob(token.split('.')[1]));
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return {
+      nombre: payload.nombre,
+      email: payload.email,
+      rol: payload.role
+    };
   }
 
 }

@@ -1,11 +1,17 @@
 <nav class="navbar">
-  <!-- Logo -->
-  <div class="logo">
-    <a routerLink="/">🍴 RestauranteApp</a>
+  <div class="navbar-left">
+    <a routerLink="/" class="logo">
+      <i class="fas fa-utensils"></i> ReserGo
+    </a>
+
+
+    <button class="burger-btn" (click)="menuAbierto = !menuAbierto">
+      <i class="fas" [ngClass]="{ 'fa-bars': !menuAbierto, 'fa-times': menuAbierto }"></i>
+    </button>
   </div>
 
-  <!-- Enlaces centrales (visibles para todos) -->
-  <div class="nav-links">
+
+  <div class="nav-links" [class.open]="menuAbierto">
     <a routerLink="/" class="nav-link">Inicio</a>
     <a routerLink="/restaurants" class="nav-link">Restaurantes</a>
     <a routerLink="/about" class="nav-link">Sobre Nosotros</a>
@@ -13,29 +19,42 @@
     <a routerLink="/help" class="nav-link">Ayuda</a>
   </div>
 
-  <!-- Enlaces de usuario -->
-  <div class="auth-links">
+
+  <div class="auth-links" [class.open]="menuAbierto">
     @if (!username) {
-      <a routerLink="/login" class="btn">📝 Iniciar sesión</a>
+      <a routerLink="/login" class="btn">
+        <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+      </a>
     } @else {
       <span class="welcome">¡Hola, {{ username }}!</span>
 
-      <!-- Mostrar solo si NO es admin -->
-      @if (auth.getUserRole() !== 'admin') {
-        <a routerLink="/profile" class="btn">👤 Perfil</a>
-        <a routerLink="/reservations" class="btn">📋 Mis Reservas</a>
+      @if (auth.getUserRole() === 'cliente') {
+        <a routerLink="/profile" class="btn">
+          <i class="fas fa-user"></i> Perfil
+        </a>
+        <a routerLink="/reservations" class="btn">
+          <i class="fas fa-calendar-alt"></i> Mis Reservas
+        </a>
       }
 
-      <!-- Siempre visible -->
-      <button (click)="onLogout()" class="btn">🚪 Cerrar sesión</button>
+      @if (auth.getUserRole() === 'propietario') {
+        <a routerLink="/admin/restaurants" class="btn">
+          <i class="fas fa-store"></i> Mis Restaurantes
+        </a>
+        <a routerLink="/admin/reservations" class="btn">
+          <i class="fas fa-calendar-check"></i> Reservas recibidas
+        </a>
+      }
 
-      <!-- Solo si es admin -->
       @if (auth.getUserRole() === 'admin') {
-        <a routerLink="/admin" class="btn admin-btn">⚙️ Administración</a>
-      } @else if (auth.getUserRole() === 'propietario') {
-        <a routerLink="/admin/restaurants" class="btn admin-btn">🏬 Mis Restaurantes</a>
+        <a routerLink="/admin" class="btn admin-btn">
+          <i class="fas fa-cogs"></i> Administración
+        </a>
       }
 
+      <button (click)="onLogout()" class="btn">
+        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      </button>
     }
   </div>
 </nav>

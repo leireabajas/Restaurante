@@ -1,41 +1,65 @@
 import { Component, OnInit } from '@angular/core';
 import { RestaurantsService } from '../../services/restaurants.service';
-import { RouterLink } from '@angular/router';
+import {RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {NavbarComponent} from '../navbar/navbar.component';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-restaurants',
-  standalone: true,
-  imports: [RouterLink, FormsModule],
   templateUrl: './restaurants.component.html',
+  imports: [
+    RouterLink,
+    FormsModule,
+    NgClass
+  ],
   styleUrls: ['./restaurants.component.css']
 })
 export class RestaurantsComponent implements OnInit {
-  allRestaurants: any[] = [];
+  restaurants: any[] = [];
   filteredRestaurants: any[] = [];
   searchQuery: string = '';
+  foodTypes: string[] = [];
+  selectedType: string = '';
 
-  constructor(private rs: RestaurantsService) {}
+  constructor(private restaurantsService: RestaurantsService) {}
 
   ngOnInit(): void {
-    this.rs.getRestaurants().subscribe(res => {
-      this.allRestaurants = res.data || res;
-      this.applySearch();
+    this.restaurantsService.getRestaurants().subscribe({
+      next: data => {
+        this.restaurants = data.data;
+        this.filteredRestaurants = [...this.restaurants];
+        this.foodTypes = [...new Set(this.restaurants.map(r => r.tipoComida))];
+      },
+      error: err => {
+        console.error('❌ Error al cargar restaurantes:', err);
+      }
     });
   }
 
   onSearchChange(): void {
-    this.applySearch();
+    this.filterRestaurants();
   }
 
-  private applySearch() {
-    const term = this.searchQuery.toLowerCase();
-    this.filteredRestaurants = this.allRestaurants.filter(r =>
-      !term ||
-      r.nombre.toLowerCase().includes(term) ||
-      r.ubicacion.toLowerCase().includes(term) ||
-      r.tipoComida.toLowerCase().includes(term)
-    );
+  filterByType(type: string): void {
+    this.selectedType = type === this.selectedType ? '' : type;
+    this.filterRestaurants();
+  }
+
+  clearFilters(): void {
+    this.searchQuery = '';
+    this.selectedType = '';
+    this.filteredRestaurants = [...this.restaurants];
+  }
+
+  private filterRestaurants(): void {
+    const query = this.searchQuery.toLowerCase();
+    this.filteredRestaurants = this.restaurants.filter(r => {
+      const matchesQuery =
+        r.nombre.toLowerCase().includes(query) ||
+        r.ubicacion.toLowerCase().includes(query) ||
+        r.tipoComida.toLowerCase().includes(query);
+      const matchesType = this.selectedType ? r.tipoComida === this.selectedType : true;
+      return matchesQuery && matchesType;
+    });
   }
 }

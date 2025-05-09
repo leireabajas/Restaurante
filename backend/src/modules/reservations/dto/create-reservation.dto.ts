@@ -16,4 +16,8 @@ export class CreateReservationDto {
     @IsInt()
     @Min(1)
     numeroPersonas: number;
+
+    @IsString()
+    @IsNotEmpty()
+    nombreCliente: string;
 }
